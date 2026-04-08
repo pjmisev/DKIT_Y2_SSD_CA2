@@ -1,76 +1,136 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ $player->name }}
-        </h2>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="{{ route('players.index') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $player->name }}</h2>
+            </div>
+            @if (Auth::user()->isAdmin())
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('players.edit', $player) }}" class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">Edit</a>
+                    <form method="POST" action="{{ route('players.destroy', $player) }}">
+                        @csrf @method('DELETE')
+                        <button type="submit" onclick="return confirm('Remove {{ addslashes($player->name) }}?')" class="inline-flex items-center bg-white hover:bg-red-50 text-red-600 border border-red-200 text-sm font-semibold px-4 py-2 rounded-lg transition-colors">Delete</button>
+                    </form>
+                </div>
+            @endif
+        </div>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    <div class="grid grid-cols-2 gap-6">
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('Information') }}</h3>
-                            <dl class="mt-4 space-y-4">
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Name') }}</dt>
-                                    <dd class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $player->name }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Age') }}</dt>
-                                    <dd class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $player->age ?? '-' }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Position') }}</dt>
-                                    <dd class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $player->position ?? '-' }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Team') }}</dt>
-                                    <dd class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $player->team ?? '-' }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Created By') }}</dt>
-                                    <dd class="mt-1 text-lg text-gray-900 dark:text-gray-100">{{ $player->creator?->name ?? '-' }}</dd>
-                                </div>
-                            </dl>
-                        </div>
+    <div class="py-10">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
 
-                        <div>
-                            <h3 class="text-lg font-medium text-gray-700 dark:text-gray-300">{{ __('Timestamps') }}</h3>
-                            <dl class="mt-4 space-y-4">
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Created') }}</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $player->created_at->format('M d, Y H:i') }}</dd>
-                                </div>
-                                <div>
-                                    <dt class="text-sm font-medium text-gray-500 dark:text-gray-400">{{ __('Last Updated') }}</dt>
-                                    <dd class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $player->updated_at->format('M d, Y H:i') }}</dd>
-                                </div>
-                            </dl>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex justify-between">
-                        <a href="{{ route('players.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-500 active:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            {{ __('Back') }}
-                        </a>
-                        <div class="space-x-2">
-                            <a href="{{ route('players.edit', $player) }}" class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 active:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                                {{ __('Edit') }}
-                            </a>
-                            <form method="POST" action="{{ route('players.destroy', $player) }}" class="inline">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150" onclick="return confirm('Are you sure?')">
-                                    {{ __('Delete') }}
-                                </button>
-                            </form>
-                        </div>
+            {{-- Header card --}}
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5">
+                <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-black text-2xl shrink-0">
+                    {{ $player->jersey_number !== null ? '#'.$player->jersey_number : strtoupper(substr($player->name, 0, 1)) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-xl font-bold text-gray-900">{{ $player->name }}</div>
+                    <div class="text-sm text-gray-400 mt-0.5 flex items-center gap-2 flex-wrap">
+                        @if ($player->position) <span>{{ $player->position }}</span> @endif
+                        @if ($player->position && $player->team) <span>&middot;</span> @endif
+                        @if ($player->team) <span>{{ $player->team }}</span> @endif
                     </div>
                 </div>
+                @php
+                    $healthColors = [
+                        'fit'        => 'bg-green-100 text-green-700',
+                        'injured'    => 'bg-red-100 text-red-700',
+                        'recovering' => 'bg-yellow-100 text-yellow-700',
+                        'suspended'  => 'bg-gray-100 text-gray-600',
+                    ];
+                @endphp
+                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold {{ $healthColors[$player->health_status] ?? 'bg-gray-100 text-gray-600' }}">
+                    {{ ucfirst($player->health_status) }}
+                </span>
             </div>
+
+            {{-- Details grid --}}
+            <div class="grid grid-cols-2 gap-5">
+
+                {{-- Identity --}}
+                <div class="col-span-2 sm:col-span-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Identity</h3>
+                    <dl class="space-y-3">
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Date of Birth</dt>
+                            <dd class="text-sm font-medium text-gray-800">
+                                @if ($player->date_of_birth)
+                                    {{ $player->date_of_birth->format('M d, Y') }}
+                                    <span class="text-gray-400">({{ $player->date_of_birth->age }} yrs)</span>
+                                @else —
+                                @endif
+                            </dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Nationality</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $player->nationality ?? '—' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Dominant Hand</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $player->dominant_hand ? ucfirst($player->dominant_hand) : '—' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Jersey #</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $player->jersey_number !== null ? '#'.$player->jersey_number : '—' }}</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                {{-- Physical --}}
+                <div class="col-span-2 sm:col-span-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Physical</h3>
+                    <dl class="space-y-3">
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Height</dt>
+                            <dd class="text-sm font-medium text-gray-800">
+                                @if ($player->height_cm)
+                                    {{ $player->height_cm }} cm
+                                    @php
+                                        $inches = round($player->height_cm / 2.54);
+                                        $ft = intdiv($inches, 12);
+                                        $in = $inches % 12;
+                                    @endphp
+                                    <span class="text-gray-400">({{ $ft }}'{{ $in }}")</span>
+                                @else —
+                                @endif
+                            </dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Weight</dt>
+                            <dd class="text-sm font-medium text-gray-800">
+                                @if ($player->weight_kg)
+                                    {{ $player->weight_kg }} kg
+                                    <span class="text-gray-400">({{ round($player->weight_kg * 2.205) }} lbs)</span>
+                                @else —
+                                @endif
+                            </dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Position</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $player->position ?? '—' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Team</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $player->team ?? '—' }}</dd>
+                        </div>
+                    </dl>
+                </div>
+
+                {{-- Health --}}
+                @if ($player->notes)
+                    <div class="col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Health Notes</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{{ $player->notes }}</p>
+                    </div>
+                @endif
+
+            </div>
+
+            <p class="text-xs text-gray-400 text-right">Added by {{ $player->creator?->name ?? '—' }} &middot; {{ $player->created_at->format('M d, Y') }}</p>
         </div>
     </div>
 </x-app-layout>
-

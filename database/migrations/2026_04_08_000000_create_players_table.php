@@ -17,6 +17,14 @@ return new class extends Migration
             $table->unsignedTinyInteger('age')->nullable();
             $table->string('position')->nullable();
             $table->string('team')->nullable();
+            $table->unsignedTinyInteger('jersey_number')->nullable();
+            $table->string('nationality')->nullable();
+            $table->string('dominant_hand', 10)->nullable(); 
+            $table->unsignedSmallInteger('height_cm')->nullable();
+            $table->unsignedSmallInteger('weight_kg')->nullable();
+            $table->string('health_status', 20)->default('fit');
+            $table->date('date_of_birth')->nullable();
+            $table->text('notes')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
