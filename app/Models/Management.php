@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\User;
 
-class Coach extends Model
+class Management extends Model
 {
     use HasFactory;
+
+    protected $table = 'management';
 
     protected $fillable = [
         'name',

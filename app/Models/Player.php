@@ -13,8 +13,8 @@ class Player extends Model
 
     protected $fillable = [
         'name',
+        'email',
         'jersey_number',
-        'age',
         'date_of_birth',
         'position',
         'nationality',
@@ -22,6 +22,7 @@ class Player extends Model
         'height_cm',
         'weight_kg',
         'health_status',
+        'salary',
         'team',
         'notes',
         'created_by',
