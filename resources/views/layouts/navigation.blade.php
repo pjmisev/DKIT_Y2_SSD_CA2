@@ -24,6 +24,10 @@
                         class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('players.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
                         Players
                     </a>
+                    <a href="{{ route('coaches.index') }}"
+                        class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('coaches.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
+                        Coaches
+                    </a>
                     <a href="{{ route('events.index') }}"
                         class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('events.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
                         Events
@@ -88,6 +92,10 @@
             <a href="{{ route('players.index') }}"
                 class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('players.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 Players
+            </a>
+            <a href="{{ route('coaches.index') }}"
+                class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('coaches.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                Coaches
             </a>
             <a href="{{ route('events.index') }}"
                 class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('events.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">

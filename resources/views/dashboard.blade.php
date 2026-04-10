@@ -8,7 +8,7 @@
 
             <p class="text-gray-500 mb-8">Welcome back, <span class="font-semibold text-gray-800">{{ Auth::user()->name }}</span>.</p>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <!-- Players Card -->
                 <a href="{{ route('players.index') }}" class="group block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
                     <div class="flex items-center gap-4 mb-4">
@@ -23,6 +23,22 @@
                         </div>
                     </div>
                     <span class="text-sm font-medium text-indigo-600 group-hover:text-indigo-700">View roster &rarr;</span>
+                </a>
+
+                <!-- Coaches Card -->
+                <a href="{{ route('coaches.index') }}" class="group block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-emerald-200 transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
+                            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Coach::count() }}</div>
+                            <div class="text-sm text-gray-500">Coaches</div>
+                        </div>
+                    </div>
+                    <span class="text-sm font-medium text-emerald-600 group-hover:text-emerald-700">View staff &rarr;</span>
                 </a>
 
                 <!-- Events Card -->
