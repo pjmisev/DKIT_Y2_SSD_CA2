@@ -12,11 +12,36 @@ use Illuminate\View\View;
 
 class PlayerController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $players = Player::orderBy('name')->get();
+        $query = Player::query();
 
-        return view('players.index', compact('players'));
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($position = $request->input('position')) {
+            $query->where('position', $position);
+        }
+
+        if ($health = $request->input('health_status')) {
+            $query->where('health_status', $health);
+        }
+
+        if ($team = $request->input('team')) {
+            $query->where('team', 'like', "%{$team}%");
+        }
+
+        $players = $query->orderBy('name')->get();
+
+        return view('players.index', [
+            'players'        => $players,
+            'positions'      => Player::POSITIONS,
+            'healthStatuses' => Player::HEALTH_STATUSES,
+        ]);
     }
 
     public function create(): View

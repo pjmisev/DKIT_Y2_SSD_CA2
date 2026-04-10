@@ -10,9 +10,26 @@ use Illuminate\View\View;
 
 class EventController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $events = Event::with('creator')->orderBy('start_time')->get();
+        $query = Event::with('creator');
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('location', 'like', "%{$search}%");
+            });
+        }
+
+        if ($period = $request->input('period')) {
+            if ($period === 'upcoming') {
+                $query->where('end_time', '>=', now());
+            } elseif ($period === 'past') {
+                $query->where('end_time', '<', now());
+            }
+        }
+
+        $events = $query->orderBy('start_time')->get();
 
         return view('events.index', compact('events'));
     }

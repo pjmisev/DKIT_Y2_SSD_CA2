@@ -21,14 +21,46 @@
                 </div>
             @endif
 
+            {{-- Search & filters --}}
+            <form method="GET" action="{{ route('coaches.index') }}" class="mb-6 bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                <div class="flex flex-wrap gap-3">
+                    <div class="flex-1 min-w-48">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search name or email…"
+                            class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <input type="text" name="team" value="{{ request('team') }}" placeholder="Team…"
+                            class="block rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <input type="text" name="nationality" value="{{ request('nationality') }}" placeholder="Nationality…"
+                            class="block rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                    </div>
+                    <button type="submit" class="inline-flex items-center gap-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        Search
+                    </button>
+                    @if (request()->hasAny(['search', 'team', 'nationality']))
+                        <a href="{{ route('coaches.index') }}" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 font-medium px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            Clear
+                        </a>
+                    @endif
+                </div>
+            </form>
+
             @if ($coaches->isEmpty())
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-16 text-center">
                     <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                     </svg>
-                    <p class="text-gray-500 font-medium">No coaches yet.</p>
-                    @if (Auth::user()->isAdmin())
-                        <a href="{{ route('coaches.create') }}" class="mt-4 inline-block text-indigo-600 hover:text-indigo-700 text-sm font-semibold">Add the first coach &rarr;</a>
+                    @if (request()->hasAny(['search', 'team', 'nationality']))
+                        <p class="text-gray-500 font-medium">No coaches match your search.</p>
+                        <a href="{{ route('coaches.index') }}" class="mt-4 inline-block text-indigo-600 hover:text-indigo-700 text-sm font-semibold">Clear filters &rarr;</a>
+                    @else
+                        <p class="text-gray-500 font-medium">No coaches yet.</p>
+                        @if (Auth::user()->isAdmin())
+                            <a href="{{ route('coaches.create') }}" class="mt-4 inline-block text-indigo-600 hover:text-indigo-700 text-sm font-semibold">Add the first coach &rarr;</a>
+                        @endif
                     @endif
                 </div>
             @else

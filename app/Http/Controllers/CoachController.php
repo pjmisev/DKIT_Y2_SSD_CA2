@@ -11,9 +11,26 @@ use Illuminate\View\View;
 
 class CoachController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $coaches = Coach::orderBy('name')->get();
+        $query = Coach::query();
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($team = $request->input('team')) {
+            $query->where('team', 'like', "%{$team}%");
+        }
+
+        if ($nationality = $request->input('nationality')) {
+            $query->where('nationality', 'like', "%{$nationality}%");
+        }
+
+        $coaches = $query->orderBy('name')->get();
 
         return view('coaches.index', compact('coaches'));
     }

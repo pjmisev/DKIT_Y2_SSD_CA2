@@ -21,14 +21,52 @@
                 </div>
             @endif
 
+            {{-- Search & filters --}}
+            <form method="GET" action="{{ route('events.index') }}" class="mb-6 bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                <div class="flex flex-wrap gap-3">
+                    <div class="flex-1 min-w-48">
+                        <input type="text" name="search" value="{{ request('search') }}" placeholder="Search name or location…"
+                            class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-orange-400 focus:ring-orange-400">
+                    </div>
+                    <div class="flex rounded-lg overflow-hidden border border-gray-300 text-sm font-medium">
+                        <a href="{{ request()->fullUrlWithQuery(['period' => '']) }}"
+                           class="px-4 py-2 transition-colors {{ !request('period') ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                            All
+                        </a>
+                        <a href="{{ request()->fullUrlWithQuery(['period' => 'upcoming']) }}"
+                           class="px-4 py-2 border-l border-gray-300 transition-colors {{ request('period') === 'upcoming' ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                            Upcoming
+                        </a>
+                        <a href="{{ request()->fullUrlWithQuery(['period' => 'past']) }}"
+                           class="px-4 py-2 border-l border-gray-300 transition-colors {{ request('period') === 'past' ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                            Past
+                        </a>
+                    </div>
+                    <button type="submit" class="inline-flex items-center gap-1.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        Search
+                    </button>
+                    @if (request()->hasAny(['search', 'period']))
+                        <a href="{{ route('events.index') }}" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 font-medium px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                            Clear
+                        </a>
+                    @endif
+                </div>
+            </form>
+
             @if ($events->isEmpty())
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-16 text-center">
                     <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
-                    <p class="text-gray-500 font-medium">No events scheduled.</p>
-                    @if (Auth::user()->isAdmin())
-                        <a href="{{ route('events.create') }}" class="mt-4 inline-block text-orange-500 hover:text-orange-600 text-sm font-semibold">Schedule the first event &rarr;</a>
+                    @if (request()->hasAny(['search', 'period']))
+                        <p class="text-gray-500 font-medium">No events match your search.</p>
+                        <a href="{{ route('events.index') }}" class="mt-4 inline-block text-orange-500 hover:text-orange-600 text-sm font-semibold">Clear filters &rarr;</a>
+                    @else
+                        <p class="text-gray-500 font-medium">No events scheduled.</p>
+                        @if (Auth::user()->isAdmin())
+                            <a href="{{ route('events.create') }}" class="mt-4 inline-block text-orange-500 hover:text-orange-600 text-sm font-semibold">Schedule the first event &rarr;</a>
+                        @endif
                     @endif
                 </div>
             @else
