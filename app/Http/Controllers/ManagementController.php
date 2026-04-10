@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Coach;
 use App\Models\Management;
+use App\Models\Player;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -12,6 +14,15 @@ use Illuminate\View\View;
 
 class ManagementController extends Controller
 {
+    private function takenUserIds(?int $exceptUserId = null): array
+    {
+        return collect([
+            Player::whereNotNull('linked_to')->pluck('linked_to'),
+            Coach::whereNotNull('linked_to')->pluck('linked_to'),
+            Management::whereNotNull('linked_to')->pluck('linked_to'),
+        ])->flatten()->unique()->reject(fn ($id) => $id === $exceptUserId)->values()->all();
+    }
+
     public function index(Request $request): View
     {
         $query = Management::query();
@@ -39,7 +50,7 @@ class ManagementController extends Controller
     public function create(): View
     {
         return view('management.create', [
-            'users' => User::orderBy('name')->get(),
+            'users' => User::whereNotIn('id', $this->takenUserIds())->orderBy('name')->get(),
             'roles' => Management::ROLES,
         ]);
     }
@@ -55,7 +66,15 @@ class ManagementController extends Controller
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'salary'        => ['nullable', 'integer', 'min:0'],
             'notes'         => ['nullable', 'string'],
-            'linked_to'     => ['nullable', 'exists:users,id'],
+            'linked_to'     => ['nullable', 'exists:users,id', function ($_, $value, $fail) {
+                if (!$value) return;
+                $taken = Player::where('linked_to', $value)->exists()
+                      || Coach::where('linked_to', $value)->exists()
+                      || Management::where('linked_to', $value)->exists();
+                if ($taken) {
+                    $fail('This user is already linked to another player, coach, or management member.');
+                }
+            }],
         ]);
 
         $validated['created_by'] = Auth::id();
@@ -74,7 +93,7 @@ class ManagementController extends Controller
     {
         return view('management.edit', [
             'management' => $management,
-            'users'      => User::orderBy('name')->get(),
+            'users'      => User::whereNotIn('id', $this->takenUserIds($management->linked_to))->orderBy('name')->get(),
             'roles'      => Management::ROLES,
         ]);
     }
@@ -90,7 +109,15 @@ class ManagementController extends Controller
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'salary'        => ['nullable', 'integer', 'min:0'],
             'notes'         => ['nullable', 'string'],
-            'linked_to'     => ['nullable', 'exists:users,id'],
+            'linked_to'     => ['nullable', 'exists:users,id', function ($_, $value, $fail) use ($management) {
+                if (!$value) return;
+                $taken = Player::where('linked_to', $value)->exists()
+                      || Coach::where('linked_to', $value)->exists()
+                      || Management::where('linked_to', $value)->where('id', '!=', $management->id)->exists();
+                if ($taken) {
+                    $fail('This user is already linked to another player, coach, or management member.');
+                }
+            }],
         ]);
 
         $management->update($validated);
