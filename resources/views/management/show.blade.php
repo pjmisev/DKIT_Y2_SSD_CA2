@@ -95,6 +95,14 @@
 
             </div>
 
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Linked Account</h3>
+                <p class="text-sm text-gray-800 font-medium">{{ $management->linkedUser?->name ?? '—' }}</p>
+                @if ($management->linkedUser)
+                    <p class="text-xs text-gray-400 mt-0.5">{{ $management->linkedUser->email }}</p>
+                @endif
+            </div>
+
             <p class="text-xs text-gray-400 text-right">Added by {{ $management->creator?->name ?? '—' }} &middot; {{ $management->created_at->format('M d, Y') }}</p>
         </div>
     </div>
