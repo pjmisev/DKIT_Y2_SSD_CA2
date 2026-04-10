@@ -1,94 +1,82 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Add Coach
-        </h2>
+        <div class="flex items-center gap-3">
+            <a href="{{ route('coaches.index') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </a>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Add Coach</h2>
+        </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                <form method="POST" action="{{ route('coaches.store') }}" class="space-y-8">
+    <div class="py-10">
+        <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+                <form method="POST" action="{{ route('coaches.store') }}" class="space-y-6">
                     @csrf
 
+                    {{-- Identity --}}
                     <div>
-                        <h3 class="text-lg font-medium text-gray-900">Coach Details</h3>
-                        <div class="mt-4 grid gap-6 md:grid-cols-2">
-                            <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700">Full Name *</label>
-                                <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                @error('name')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Identity</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="col-span-2">
+                                <label for="name" class="block text-sm font-semibold text-gray-700 mb-1.5">Full Name <span class="text-red-500">*</span></label>
+                                <input type="text" name="name" id="name" value="{{ old('name') }}" required
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('name') border-red-400 @enderror">
+                                @error('name') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
                             </div>
-
-                            <div>
-                                <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
-                                <select name="role" id="role"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                    <option value="">— Select —</option>
-                                    @foreach ($roles as $role)
-                                        <option value="{{ $role }}" {{ old('role') === $role ? 'selected' : '' }}>
-                                            {{ $role }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('role')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label for="team" class="block text-sm font-medium text-gray-700">Team</label>
-                                <input type="text" name="team" id="team" value="{{ old('team') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                @error('team')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-
-                            <div>
-                                <label for="experience_years" class="block text-sm font-medium text-gray-700">Experience (Years)</label>
-                                <input type="number" name="experience_years" id="experience_years" value="{{ old('experience_years') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                @error('experience_years')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-lg font-medium text-gray-900">Contact</h3>
-                        <div class="mt-4 grid gap-6 md:grid-cols-2">
-                            <div>
-                                <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <div class="col-span-2">
+                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
                                 <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                @error('email')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('email') border-red-400 @enderror">
+                                @error('email') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
                             </div>
-
                             <div>
-                                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
-                                <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
-                                       class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
-                                @error('phone')
-                                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                                @enderror
+                                <label for="date_of_birth" class="block text-sm font-semibold text-gray-700 mb-1.5">Date of Birth</label>
+                                <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth') }}"
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('date_of_birth') border-red-400 @enderror">
+                                @error('date_of_birth') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                            </div>
+                            <div>
+                                <label for="nationality" class="block text-sm font-semibold text-gray-700 mb-1.5">Nationality</label>
+                                <input type="text" name="nationality" id="nationality" value="{{ old('nationality') }}"
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
                             </div>
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-4">
-                        <a href="{{ route('coaches.index') }}" class="text-sm text-gray-600 hover:text-gray-900">
-                            Cancel
-                        </a>
+                    {{-- Club --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Club</h3>
+                        <div>
+                            <label for="team" class="block text-sm font-semibold text-gray-700 mb-1.5">Team</label>
+                            <input type="text" name="team" id="team" value="{{ old('team') }}"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                    </div>
 
-                        <button type="submit"
-                                class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-white text-sm font-medium hover:bg-indigo-700">
+                    {{-- Contract --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Contract</h3>
+                        <div>
+                            <label for="salary" class="block text-sm font-semibold text-gray-700 mb-1.5">Salary (€)</label>
+                            <input type="number" name="salary" id="salary" value="{{ old('salary') }}" min="0"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('salary') border-red-400 @enderror">
+                            @error('salary') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+                    </div>
+
+                    {{-- Notes --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Notes</h3>
+                        <div>
+                            <textarea name="notes" id="notes" rows="3" placeholder="Additional information..."
+                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('notes') }}</textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-2 border-t border-gray-100">
+                        <a href="{{ route('coaches.index') }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">Cancel</a>
+                        <button type="submit" class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
                             Add Coach
                         </button>
                     </div>

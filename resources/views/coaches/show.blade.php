@@ -1,98 +1,101 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ $coach->name }}
-            </h2>
-
+            <div class="flex items-center gap-3">
+                <a href="{{ route('coaches.index') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $coach->name }}</h2>
+            </div>
             @if (Auth::user()->isAdmin())
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('coaches.edit', $coach) }}" class="text-yellow-600 hover:text-yellow-800">
-                        Edit
-                    </a>
-
+                <div class="flex items-center gap-3">
+                    <a href="{{ route('coaches.edit', $coach) }}" class="inline-flex items-center bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">Edit</a>
                     <form method="POST" action="{{ route('coaches.destroy', $coach) }}">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit"
-                                class="text-red-600 hover:text-red-800"
-                                onclick="return confirm('Are you sure you want to delete this coach?')">
-                            Delete
-                        </button>
+                        @csrf @method('DELETE')
+                        <button type="submit" onclick="return confirm('Remove {{ addslashes($coach->name) }}?')" class="inline-flex items-center bg-white hover:bg-red-50 text-red-600 border border-red-200 text-sm font-semibold px-4 py-2 rounded-lg transition-colors">Delete</button>
                     </form>
                 </div>
             @endif
         </div>
     </x-slot>
 
-    <div class="py-8">
-        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8 space-y-6">
+    <div class="py-10">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
+
             @if (session('status') === 'coach-updated')
-                <div class="rounded-lg bg-green-100 px-4 py-3 text-green-700">
+                <div class="flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 text-sm rounded-xl px-4 py-3">
+                    <svg class="w-4 h-4 shrink-0 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                     Coach updated successfully.
                 </div>
             @endif
 
-            <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                <div class="flex items-start gap-4">
-                    <div class="flex h-16 w-16 items-center justify-center rounded-full bg-indigo-100 text-xl font-bold text-indigo-700">
-                        {{ strtoupper(substr($coach->name, 0, 1)) }}
-                    </div>
-
-                    <div>
-                        <h3 class="text-2xl font-bold text-gray-900">{{ $coach->name }}</h3>
-                        <p class="mt-1 text-gray-600">
-                            @if ($coach->role) {{ $coach->role }} @endif
-                            @if ($coach->role && $coach->team) · @endif
-                            @if ($coach->team) {{ $coach->team }} @endif
-                        </p>
+            {{-- Header card --}}
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5">
+                <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-black text-2xl shrink-0">
+                    {{ strtoupper(substr($coach->name, 0, 1)) }}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="text-xl font-bold text-gray-900">{{ $coach->name }}</div>
+                    <div class="text-sm text-gray-400 mt-0.5">
+                        @if ($coach->team) {{ $coach->team }} @endif
                     </div>
                 </div>
             </div>
 
-            <div class="grid gap-6 md:grid-cols-2">
-                <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Contact</h3>
+            {{-- Details grid --}}
+            <div class="grid grid-cols-2 gap-5">
 
-                    <div class="space-y-3 text-sm text-gray-700">
-                        <div>
-                            <span class="font-medium text-gray-900">Email:</span>
-                            {{ $coach->email ?? '—' }}
+                {{-- Identity --}}
+                <div class="col-span-2 sm:col-span-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Identity</h3>
+                    <dl class="space-y-3">
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Email</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $coach->email ?? '—' }}</dd>
                         </div>
-
-                        <div>
-                            <span class="font-medium text-gray-900">Phone:</span>
-                            {{ $coach->phone ?? '—' }}
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Date of Birth</dt>
+                            <dd class="text-sm font-medium text-gray-800">
+                                @if ($coach->date_of_birth)
+                                    {{ $coach->date_of_birth->format('M d, Y') }}
+                                    <span class="text-gray-400">({{ $coach->date_of_birth->age }} yrs)</span>
+                                @else —
+                                @endif
+                            </dd>
                         </div>
-                    </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Nationality</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $coach->nationality ?? '—' }}</dd>
+                        </div>
+                    </dl>
                 </div>
 
-                <div class="bg-white shadow-sm sm:rounded-lg p-6">
-                    <h3 class="text-lg font-semibold text-gray-900 mb-4">Club Info</h3>
-
-                    <div class="space-y-3 text-sm text-gray-700">
-                        <div>
-                            <span class="font-medium text-gray-900">Role:</span>
-                            {{ $coach->role ?? '—' }}
+                {{-- Club & Contract --}}
+                <div class="col-span-2 sm:col-span-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                    <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Club & Contract</h3>
+                    <dl class="space-y-3">
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Team</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $coach->team ?? '—' }}</dd>
                         </div>
-
-                        <div>
-                            <span class="font-medium text-gray-900">Team:</span>
-                            {{ $coach->team ?? '—' }}
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Salary</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $coach->salary !== null ? '€'.number_format($coach->salary) : '—' }}</dd>
                         </div>
-
-                        <div>
-                            <span class="font-medium text-gray-900">Experience:</span>
-                            {{ $coach->experience_years !== null ? $coach->experience_years . ' years' : '—' }}
-                        </div>
-                    </div>
+                    </dl>
                 </div>
+
+                {{-- Notes --}}
+                @if ($coach->notes)
+                    <div class="col-span-2 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Notes</h3>
+                        <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{{ $coach->notes }}</p>
+                    </div>
+                @endif
+
             </div>
 
-            <div class="text-sm text-gray-500">
-                Added by {{ $coach->creator?->name ?? '—' }} · {{ $coach->created_at->format('M d, Y') }}
-            </div>
+            <p class="text-xs text-gray-400 text-right">Added by {{ $coach->creator?->name ?? '—' }} &middot; {{ $coach->created_at->format('M d, Y') }}</p>
         </div>
     </div>
 </x-app-layout>
