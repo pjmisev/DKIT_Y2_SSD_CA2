@@ -31,6 +31,16 @@
                                     class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('email') border-red-400 @enderror">
                                 @error('email') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
                             </div>
+                            <div class="col-span-2">
+                                <label for="role" class="block text-sm font-semibold text-gray-700 mb-1.5">Role</label>
+                                <select name="role" id="role"
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">
+                                    <option value="">— Select —</option>
+                                    @foreach ($roles as $role)
+                                        <option value="{{ $role }}" {{ old('role', $coach->role) === $role ? 'selected' : '' }}>{{ $role }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             <div>
                                 <label for="date_of_birth" class="block text-sm font-semibold text-gray-700 mb-1.5">Date of Birth</label>
                                 <input type="date" name="date_of_birth" id="date_of_birth" value="{{ old('date_of_birth', $coach->date_of_birth?->format('Y-m-d')) }}"

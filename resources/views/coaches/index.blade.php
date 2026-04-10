@@ -69,6 +69,7 @@
                         <thead>
                             <tr class="bg-gray-50">
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Team</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nationality</th>
                                 <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
@@ -81,6 +82,7 @@
                                     <td class="px-6 py-4">
                                         <a href="{{ route('coaches.show', $coach) }}" class="font-semibold text-gray-900 hover:text-indigo-600 transition-colors">{{ $coach->name }}</a>
                                     </td>
+                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $coach->role ?? '—' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $coach->team ?? '—' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $coach->nationality ?? '—' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $coach->email ?? '—' }}</td>

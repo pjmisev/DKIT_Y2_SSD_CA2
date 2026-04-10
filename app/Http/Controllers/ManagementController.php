@@ -7,13 +7,31 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class ManagementController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
-        $members = Management::orderBy('name')->get();
+        $query = Management::query();
+
+        if ($search = $request->input('search')) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        if ($team = $request->input('team')) {
+            $query->where('team', 'like', "%{$team}%");
+        }
+
+        if ($nationality = $request->input('nationality')) {
+            $query->where('nationality', 'like', "%{$nationality}%");
+        }
+
+        $members = $query->orderBy('name')->get();
 
         return view('management.index', compact('members'));
     }
@@ -22,6 +40,7 @@ class ManagementController extends Controller
     {
         return view('management.create', [
             'users' => User::orderBy('name')->get(),
+            'roles' => Management::ROLES,
         ]);
     }
 
@@ -30,6 +49,7 @@ class ManagementController extends Controller
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['nullable', 'email', 'max:255'],
+            'role'          => ['nullable', Rule::in(Management::ROLES)],
             'team'          => ['nullable', 'string', 'max:255'],
             'nationality'   => ['nullable', 'string', 'max:100'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],
@@ -55,6 +75,7 @@ class ManagementController extends Controller
         return view('management.edit', [
             'management' => $management,
             'users'      => User::orderBy('name')->get(),
+            'roles'      => Management::ROLES,
         ]);
     }
 
@@ -63,6 +84,7 @@ class ManagementController extends Controller
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['nullable', 'email', 'max:255'],
+            'role'          => ['nullable', Rule::in(Management::ROLES)],
             'team'          => ['nullable', 'string', 'max:255'],
             'nationality'   => ['nullable', 'string', 'max:100'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],

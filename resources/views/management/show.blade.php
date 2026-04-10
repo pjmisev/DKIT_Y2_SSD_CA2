@@ -37,7 +37,9 @@
                 <div class="flex-1 min-w-0">
                     <div class="text-xl font-bold text-gray-900">{{ $management->name }}</div>
                     <div class="text-sm text-gray-400 mt-0.5">
-                        @if ($management->team) {{ $management->team }} @endif
+                        @if ($management->role) <span>{{ $management->role }}</span> @endif
+                        @if ($management->role && $management->team) <span>&middot;</span> @endif
+                        @if ($management->team) <span>{{ $management->team }}</span> @endif
                     </div>
                 </div>
             </div>
@@ -74,6 +76,10 @@
                 <div class="col-span-2 sm:col-span-1 bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Club & Contract</h3>
                     <dl class="space-y-3">
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Role</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $management->role ?? '—' }}</dd>
+                        </div>
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Team</dt>
                             <dd class="text-sm font-medium text-gray-800">{{ $management->team ?? '—' }}</dd>

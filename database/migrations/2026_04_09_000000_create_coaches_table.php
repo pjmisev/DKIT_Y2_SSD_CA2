@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('team')->nullable();
+            $table->string('role')->nullable();
             $table->string('nationality')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->unsignedBigInteger('salary')->nullable();

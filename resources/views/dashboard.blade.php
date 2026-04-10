@@ -8,7 +8,7 @@
 
             <p class="text-gray-500 mb-8">Welcome back, <span class="font-semibold text-gray-800">{{ Auth::user()->name }}</span>.</p>
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Players Card -->
                 <a href="{{ route('players.index') }}" class="group block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-indigo-200 transition-all duration-200">
                     <div class="flex items-center gap-4 mb-4">
@@ -39,6 +39,22 @@
                         </div>
                     </div>
                     <span class="text-sm font-medium text-emerald-600 group-hover:text-emerald-700">View staff &rarr;</span>
+                </a>
+
+                <!-- Management Card -->
+                <a href="{{ route('management.index') }}" class="group block bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center group-hover:bg-sky-200 transition-colors">
+                            <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6a4 4 0 11-8 0 4 4 0 018 0zM12 11v1m0 4h.01"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Management::count() }}</div>
+                            <div class="text-sm text-gray-500">Management</div>
+                        </div>
+                    </div>
+                    <span class="text-sm font-medium text-sky-600 group-hover:text-sky-700">View management &rarr;</span>
                 </a>
 
                 <!-- Events Card -->

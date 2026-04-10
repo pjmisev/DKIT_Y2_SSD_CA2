@@ -16,6 +16,7 @@ class Management extends Model
     protected $fillable = [
         'name',
         'email',
+        'role',
         'team',
         'nationality',
         'date_of_birth',
@@ -23,6 +24,16 @@ class Management extends Model
         'notes',
         'created_by',
         'linked_to',
+    ];
+
+    public const ROLES = [
+        'General Manager',
+        'Team Manager',
+        'Director of Basketball Operations',
+        'President',
+        'Scout',
+        'Medical Staff',
+        'Administrative Staff',
     ];
 
     protected function casts(): array

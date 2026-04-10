@@ -6,7 +6,7 @@
     <div class="py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-10">
                 <a href="{{ route('admin.users.index') }}" class="group bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md hover:border-violet-200 transition-all duration-200">
                     <div class="flex items-center gap-4 mb-4">
                         <div class="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center group-hover:bg-violet-200 transition-colors">
@@ -31,6 +31,32 @@
                         </div>
                     </div>
                     <span class="text-sm font-medium text-indigo-600">Manage players &rarr;</span>
+                </a>
+
+                <a href="{{ route('coaches.index') }}" class="group bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md hover:border-emerald-200 transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center group-hover:bg-emerald-200 transition-colors">
+                            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Coach::count() }}</div>
+                            <div class="text-sm text-gray-500">Coaches</div>
+                        </div>
+                    </div>
+                    <span class="text-sm font-medium text-emerald-600">Manage coaches &rarr;</span>
+                </a>
+
+                <a href="{{ route('management.index') }}" class="group bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md hover:border-sky-200 transition-all duration-200">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center group-hover:bg-sky-200 transition-colors">
+                            <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6a4 4 0 11-8 0 4 4 0 018 0zM12 11v1m0 4h.01"/></svg>
+                        </div>
+                        <div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Management::count() }}</div>
+                            <div class="text-sm text-gray-500">Management</div>
+                        </div>
+                    </div>
+                    <span class="text-sm font-medium text-sky-600">Manage management &rarr;</span>
                 </a>
 
                 <a href="{{ route('events.index') }}" class="group bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md hover:border-orange-200 transition-all duration-200">

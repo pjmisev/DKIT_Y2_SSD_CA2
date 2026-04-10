@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class CoachController extends Controller
@@ -39,6 +40,7 @@ class CoachController extends Controller
     {
         return view('coaches.create', [
             'users' => User::orderBy('name')->get(),
+            'roles' => Coach::ROLES,
         ]);
     }
 
@@ -47,6 +49,7 @@ class CoachController extends Controller
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['nullable', 'email', 'max:255'],
+            'role'          => ['nullable', Rule::in(Coach::ROLES)],
             'team'          => ['nullable', 'string', 'max:255'],
             'nationality'   => ['nullable', 'string', 'max:100'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],
@@ -72,6 +75,7 @@ class CoachController extends Controller
         return view('coaches.edit', [
             'coach' => $coach,
             'users' => User::orderBy('name')->get(),
+            'roles' => Coach::ROLES,
         ]);
     }
 
@@ -80,6 +84,7 @@ class CoachController extends Controller
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
             'email'         => ['nullable', 'email', 'max:255'],
+            'role'          => ['nullable', Rule::in(Coach::ROLES)],
             'team'          => ['nullable', 'string', 'max:255'],
             'nationality'   => ['nullable', 'string', 'max:100'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],

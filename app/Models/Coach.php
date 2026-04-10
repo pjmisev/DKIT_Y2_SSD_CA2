@@ -14,6 +14,7 @@ class Coach extends Model
     protected $fillable = [
         'name',
         'email',
+        'role',
         'team',
         'nationality',
         'date_of_birth',
@@ -21,6 +22,14 @@ class Coach extends Model
         'notes',
         'created_by',
         'linked_to',
+    ];
+
+    public const ROLES = [
+        'Head Coach',
+        'Assistant Coach',
+        'Strength & Conditioning Coach',
+        'Skills Coach',
+        'Video Analyst',
     ];
 
     protected function casts(): array
