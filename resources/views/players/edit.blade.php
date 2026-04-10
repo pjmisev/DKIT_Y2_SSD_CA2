@@ -25,6 +25,12 @@
                                     class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('name') border-red-400 @enderror">
                                 @error('name') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
                             </div>
+                            <div class="col-span-2">
+                                <label for="email" class="block text-sm font-semibold text-gray-700 mb-1.5">Email</label>
+                                <input type="email" name="email" id="email" value="{{ old('email', $player->email) }}"
+                                    class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('email') border-red-400 @enderror">
+                                @error('email') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                            </div>
                             <div>
                                 <label for="jersey_number" class="block text-sm font-semibold text-gray-700 mb-1.5">Jersey #</label>
                                 <input type="number" name="jersey_number" id="jersey_number" value="{{ old('jersey_number', $player->jersey_number) }}" min="0" max="99"
@@ -92,6 +98,17 @@
                                     class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('weight_kg') border-red-400 @enderror">
                                 @error('weight_kg') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
                             </div>
+                        </div>
+                    </div>
+
+                    {{-- Contract --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Contract</h3>
+                        <div>
+                            <label for="salary" class="block text-sm font-semibold text-gray-700 mb-1.5">Salary (€)</label>
+                            <input type="number" name="salary" id="salary" value="{{ old('salary', $player->salary) }}" min="0"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500 @error('salary') border-red-400 @enderror">
+                            @error('salary') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
                         </div>
                     </div>
 

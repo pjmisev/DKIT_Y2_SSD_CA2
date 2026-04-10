@@ -56,6 +56,10 @@
                     <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Identity</h3>
                     <dl class="space-y-3">
                         <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Email</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $player->email ?? '—' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Date of Birth</dt>
                             <dd class="text-sm font-medium text-gray-800">
                                 @if ($player->date_of_birth)
@@ -76,6 +80,10 @@
                         <div class="flex justify-between">
                             <dt class="text-sm text-gray-500">Jersey #</dt>
                             <dd class="text-sm font-medium text-gray-800">{{ $player->jersey_number !== null ? '#'.$player->jersey_number : '—' }}</dd>
+                        </div>
+                        <div class="flex justify-between">
+                            <dt class="text-sm text-gray-500">Salary</dt>
+                            <dd class="text-sm font-medium text-gray-800">{{ $player->salary !== null ? '€'.number_format($player->salary) : '—' }}</dd>
                         </div>
                     </dl>
                 </div>
