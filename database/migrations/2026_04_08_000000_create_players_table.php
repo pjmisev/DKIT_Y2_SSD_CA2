@@ -27,7 +27,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->text('notes')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->foreignId('linked_to')->constrained('users')->onDelete('cascade');
+            $table->foreignId('linked_to')->nullable()->constrained('users')->onDelete('set null');
             $table->timestamps();
         });
     }
