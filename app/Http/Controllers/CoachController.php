@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Coach;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,9 @@ class CoachController extends Controller
 
     public function create(): View
     {
-        return view('coaches.create');
+        return view('coaches.create', [
+            'users' => User::orderBy('name')->get(),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -32,6 +35,7 @@ class CoachController extends Controller
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'salary'        => ['nullable', 'integer', 'min:0'],
             'notes'         => ['nullable', 'string'],
+            'linked_to'     => ['nullable', 'exists:users,id'],
         ]);
 
         $validated['created_by'] = Auth::id();
@@ -48,7 +52,10 @@ class CoachController extends Controller
 
     public function edit(Coach $coach): View
     {
-        return view('coaches.edit', compact('coach'));
+        return view('coaches.edit', [
+            'coach' => $coach,
+            'users' => User::orderBy('name')->get(),
+        ]);
     }
 
     public function update(Request $request, Coach $coach): RedirectResponse
@@ -61,6 +68,7 @@ class CoachController extends Controller
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'salary'        => ['nullable', 'integer', 'min:0'],
             'notes'         => ['nullable', 'string'],
+            'linked_to'     => ['nullable', 'exists:users,id'],
         ]);
 
         $coach->update($validated);

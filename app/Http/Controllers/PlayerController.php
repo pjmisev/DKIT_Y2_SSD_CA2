@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Player;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,8 +22,9 @@ class PlayerController extends Controller
     public function create(): View
     {
         return view('players.create', [
-            'positions'     => Player::POSITIONS,
+            'positions'      => Player::POSITIONS,
             'healthStatuses' => Player::HEALTH_STATUSES,
+            'users'          => User::orderBy('name')->get(),
         ]);
     }
 
@@ -42,6 +44,7 @@ class PlayerController extends Controller
             'salary'        => ['nullable', 'integer', 'min:0'],
             'team'          => ['nullable', 'string', 'max:255'],
             'notes'         => ['nullable', 'string'],
+            'linked_to'     => ['nullable', 'exists:users,id'],
         ]);
 
         $validated['created_by'] = Auth::id();
@@ -62,6 +65,7 @@ class PlayerController extends Controller
             'player'         => $player,
             'positions'      => Player::POSITIONS,
             'healthStatuses' => Player::HEALTH_STATUSES,
+            'users'          => User::orderBy('name')->get(),
         ]);
     }
 
@@ -81,6 +85,7 @@ class PlayerController extends Controller
             'salary'        => ['nullable', 'integer', 'min:0'],
             'team'          => ['nullable', 'string', 'max:255'],
             'notes'         => ['nullable', 'string'],
+            'linked_to'     => ['nullable', 'exists:users,id'],
         ]);
 
         $player->update($validated);

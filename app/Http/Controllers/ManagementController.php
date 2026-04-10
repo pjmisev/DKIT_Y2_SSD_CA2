@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Management;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,9 @@ class ManagementController extends Controller
 
     public function create(): View
     {
-        return view('management.create');
+        return view('management.create', [
+            'users' => User::orderBy('name')->get(),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -32,6 +35,7 @@ class ManagementController extends Controller
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'salary'        => ['nullable', 'integer', 'min:0'],
             'notes'         => ['nullable', 'string'],
+            'linked_to'     => ['nullable', 'exists:users,id'],
         ]);
 
         $validated['created_by'] = Auth::id();
@@ -48,7 +52,10 @@ class ManagementController extends Controller
 
     public function edit(Management $management): View
     {
-        return view('management.edit', compact('management'));
+        return view('management.edit', [
+            'management' => $management,
+            'users'      => User::orderBy('name')->get(),
+        ]);
     }
 
     public function update(Request $request, Management $management): RedirectResponse
@@ -61,6 +68,7 @@ class ManagementController extends Controller
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'salary'        => ['nullable', 'integer', 'min:0'],
             'notes'         => ['nullable', 'string'],
+            'linked_to'     => ['nullable', 'exists:users,id'],
         ]);
 
         $management->update($validated);
