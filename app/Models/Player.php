@@ -26,6 +26,7 @@ class Player extends Model
         'team',
         'notes',
         'created_by',
+        'linked_to',
     ];
 
     protected function casts(): array
@@ -41,5 +42,10 @@ class Player extends Model
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function linkedUser()
+    {
+        return $this->belongsTo(User::class, 'linked_to');
     }
 }
