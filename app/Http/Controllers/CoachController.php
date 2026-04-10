@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -75,9 +76,14 @@ class CoachController extends Controller
                     $fail('This user is already linked to another player, coach, or management member.');
                 }
             }],
+            'image'         => ['nullable', 'image', 'max:2048'],
         ]);
 
         $validated['created_by'] = Auth::id();
+
+        if (isset($validated['image'])) {
+            $validated['image'] = $request->file('image')->store('images/coaches', 'public');
+        }
 
         Coach::create($validated);
 
@@ -118,7 +124,17 @@ class CoachController extends Controller
                     $fail('This user is already linked to another player, coach, or management member.');
                 }
             }],
+            'image'         => ['nullable', 'image', 'max:2048'],
         ]);
+
+        if (isset($validated['image'])) {
+            if ($coach->image) {
+                Storage::disk('public')->delete($coach->image);
+            }
+            $validated['image'] = $request->file('image')->store('images/coaches', 'public');
+        } else {
+            unset($validated['image']);
+        }
 
         $coach->update($validated);
 
@@ -127,6 +143,10 @@ class CoachController extends Controller
 
     public function destroy(Coach $coach): RedirectResponse
     {
+        if ($coach->image) {
+            Storage::disk('public')->delete($coach->image);
+        }
+
         $coach->delete();
 
         return redirect()->route('coaches.index')->with('status', 'coach-deleted');

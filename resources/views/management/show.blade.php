@@ -31,9 +31,13 @@
 
             {{-- Header card --}}
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-center gap-5">
-                <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-black text-2xl shrink-0">
-                    {{ strtoupper(substr($management->name, 0, 1)) }}
-                </div>
+                @if ($management->image)
+                    <img src="{{ Storage::url($management->image) }}" alt="{{ $management->name }}" class="w-16 h-16 rounded-2xl object-cover shrink-0">
+                @else
+                    <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center text-indigo-600 font-black text-2xl shrink-0">
+                        {{ strtoupper(substr($management->name, 0, 1)) }}
+                    </div>
+                @endif
                 <div class="flex-1 min-w-0">
                     <div class="text-xl font-bold text-gray-900">{{ $management->name }}</div>
                     <div class="text-sm text-gray-400 mt-0.5">

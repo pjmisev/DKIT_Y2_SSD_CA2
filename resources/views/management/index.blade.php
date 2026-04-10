@@ -80,7 +80,16 @@
                             @foreach ($members as $member)
                                 <tr class="hover:bg-gray-50 transition-colors">
                                     <td class="px-6 py-4">
-                                        <a href="{{ route('management.show', $member) }}" class="font-semibold text-gray-900 hover:text-indigo-600 transition-colors">{{ $member->name }}</a>
+                                        <div class="flex items-center gap-3">
+                                            @if ($member->image)
+                                                <img src="{{ Storage::url($member->image) }}" alt="{{ $member->name }}" class="w-8 h-8 rounded-lg object-cover shrink-0">
+                                            @else
+                                                <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600 font-bold text-xs shrink-0">
+                                                    {{ strtoupper(substr($member->name, 0, 1)) }}
+                                                </div>
+                                            @endif
+                                            <a href="{{ route('management.show', $member) }}" class="font-semibold text-gray-900 hover:text-indigo-600 transition-colors">{{ $member->name }}</a>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $member->role ?? '—' }}</td>
                                     <td class="px-6 py-4 text-sm text-gray-500">{{ $member->team ?? '—' }}</td>

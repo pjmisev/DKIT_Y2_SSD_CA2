@@ -27,6 +27,7 @@ class Player extends Model
         'notes',
         'created_by',
         'linked_to',
+        'image',
     ];
 
     protected function casts(): array

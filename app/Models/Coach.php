@@ -22,6 +22,7 @@ class Coach extends Model
         'notes',
         'created_by',
         'linked_to',
+        'image',
     ];
 
     public const ROLES = [

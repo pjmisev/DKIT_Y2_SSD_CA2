@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -93,9 +94,14 @@ class PlayerController extends Controller
                     $fail('This user is already linked to another player, coach, or management member.');
                 }
             }],
+            'image'         => ['nullable', 'image', 'max:2048'],
         ]);
 
         $validated['created_by'] = Auth::id();
+
+        if (isset($validated['image'])) {
+            $validated['image'] = $request->file('image')->store('images/players', 'public');
+        }
 
         Player::create($validated);
 
@@ -142,7 +148,17 @@ class PlayerController extends Controller
                     $fail('This user is already linked to another player, coach, or management member.');
                 }
             }],
+            'image'         => ['nullable', 'image', 'max:2048'],
         ]);
+
+        if (isset($validated['image'])) {
+            if ($player->image) {
+                Storage::disk('public')->delete($player->image);
+            }
+            $validated['image'] = $request->file('image')->store('images/players', 'public');
+        } else {
+            unset($validated['image']);
+        }
 
         $player->update($validated);
 
@@ -151,6 +167,10 @@ class PlayerController extends Controller
 
     public function destroy(Player $player): RedirectResponse
     {
+        if ($player->image) {
+            Storage::disk('public')->delete($player->image);
+        }
+
         $player->delete();
 
         return redirect()->route('players.index')->with('status', 'player-deleted');

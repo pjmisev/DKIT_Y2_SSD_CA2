@@ -11,7 +11,7 @@
     <div class="py-10">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-                <form method="POST" action="{{ route('players.store') }}" class="space-y-6">
+                <form method="POST" action="{{ route('players.store') }}" enctype="multipart/form-data" class="space-y-6">
                     @csrf
 
                     {{-- Identity --}}
@@ -128,6 +128,17 @@
                             <label for="notes" class="block text-sm font-semibold text-gray-700 mb-1.5">Notes</label>
                             <textarea name="notes" id="notes" rows="3" placeholder="Injuries, conditions, return dates..."
                                 class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-indigo-500 focus:ring-indigo-500">{{ old('notes') }}</textarea>
+                        </div>
+                    </div>
+
+                    {{-- Photo --}}
+                    <div class="border-t border-gray-100 pt-6">
+                        <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Photo</h3>
+                        <div>
+                            <label for="image" class="block text-sm font-semibold text-gray-700 mb-1.5">Profile Image</label>
+                            <input type="file" name="image" id="image" accept="image/*"
+                                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('image') border border-red-400 rounded-lg @enderror">
+                            @error('image') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
                         </div>
                     </div>
 

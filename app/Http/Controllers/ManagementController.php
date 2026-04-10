@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
@@ -75,9 +76,14 @@ class ManagementController extends Controller
                     $fail('This user is already linked to another player, coach, or management member.');
                 }
             }],
+            'image'         => ['nullable', 'image', 'max:2048'],
         ]);
 
         $validated['created_by'] = Auth::id();
+
+        if (isset($validated['image'])) {
+            $validated['image'] = $request->file('image')->store('images/management', 'public');
+        }
 
         Management::create($validated);
 
@@ -118,7 +124,17 @@ class ManagementController extends Controller
                     $fail('This user is already linked to another player, coach, or management member.');
                 }
             }],
+            'image'         => ['nullable', 'image', 'max:2048'],
         ]);
+
+        if (isset($validated['image'])) {
+            if ($management->image) {
+                Storage::disk('public')->delete($management->image);
+            }
+            $validated['image'] = $request->file('image')->store('images/management', 'public');
+        } else {
+            unset($validated['image']);
+        }
 
         $management->update($validated);
 
@@ -127,6 +143,10 @@ class ManagementController extends Controller
 
     public function destroy(Management $management): RedirectResponse
     {
+        if ($management->image) {
+            Storage::disk('public')->delete($management->image);
+        }
+
         $management->delete();
 
         return redirect()->route('management.index')->with('status', 'management-deleted');
