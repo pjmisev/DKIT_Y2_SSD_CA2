@@ -2,24 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coach;
-use Illuminate\Http\Request;
+use App\Models\Management;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class CoachController extends Controller
+class ManagementController extends Controller
 {
     public function index(): View
     {
-        $coaches = Coach::orderBy('name')->get();
+        $members = Management::orderBy('name')->get();
 
-        return view('coaches.index', compact('coaches'));
+        return view('management.index', compact('members'));
     }
 
     public function create(): View
     {
-        return view('coaches.create');
+        return view('management.create');
     }
 
     public function store(Request $request): RedirectResponse
@@ -36,22 +36,22 @@ class CoachController extends Controller
 
         $validated['created_by'] = Auth::id();
 
-        Coach::create($validated);
+        Management::create($validated);
 
-        return redirect()->route('coaches.index')->with('status', 'coach-created');
+        return redirect()->route('management.index')->with('status', 'management-created');
     }
 
-    public function show(Coach $coach): View
+    public function show(Management $management): View
     {
-        return view('coaches.show', compact('coach'));
+        return view('management.show', compact('management'));
     }
 
-    public function edit(Coach $coach): View
+    public function edit(Management $management): View
     {
-        return view('coaches.edit', compact('coach'));
+        return view('management.edit', compact('management'));
     }
 
-    public function update(Request $request, Coach $coach): RedirectResponse
+    public function update(Request $request, Management $management): RedirectResponse
     {
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
@@ -63,15 +63,15 @@ class CoachController extends Controller
             'notes'         => ['nullable', 'string'],
         ]);
 
-        $coach->update($validated);
+        $management->update($validated);
 
-        return redirect()->route('coaches.show', $coach)->with('status', 'coach-updated');
+        return redirect()->route('management.show', $management)->with('status', 'management-updated');
     }
 
-    public function destroy(Coach $coach): RedirectResponse
+    public function destroy(Management $management): RedirectResponse
     {
-        $coach->delete();
+        $management->delete();
 
-        return redirect()->route('coaches.index')->with('status', 'coach-deleted');
+        return redirect()->route('management.index')->with('status', 'management-deleted');
     }
 }

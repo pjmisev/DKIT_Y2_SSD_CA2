@@ -30,6 +30,7 @@ class PlayerController extends Controller
     {
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
+            'email'         => ['nullable', 'email', 'max:255'],
             'jersey_number' => ['nullable', 'integer', 'min:0', 'max:99'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'position'      => ['nullable', 'string', 'max:100'],
@@ -38,6 +39,7 @@ class PlayerController extends Controller
             'height_cm'     => ['nullable', 'integer', 'min:100', 'max:250'],
             'weight_kg'     => ['nullable', 'integer', 'min:30', 'max:200'],
             'health_status' => ['required', Rule::in(Player::HEALTH_STATUSES)],
+            'salary'        => ['nullable', 'integer', 'min:0'],
             'team'          => ['nullable', 'string', 'max:255'],
             'notes'         => ['nullable', 'string'],
         ]);
@@ -67,6 +69,7 @@ class PlayerController extends Controller
     {
         $validated = $request->validate([
             'name'          => ['required', 'string', 'max:255'],
+            'email'         => ['nullable', 'email', 'max:255'],
             'jersey_number' => ['nullable', 'integer', 'min:0', 'max:99'],
             'date_of_birth' => ['nullable', 'date', 'before:today'],
             'position'      => ['nullable', 'string', 'max:100'],
@@ -75,6 +78,7 @@ class PlayerController extends Controller
             'height_cm'     => ['nullable', 'integer', 'min:100', 'max:250'],
             'weight_kg'     => ['nullable', 'integer', 'min:30', 'max:200'],
             'health_status' => ['required', Rule::in(Player::HEALTH_STATUSES)],
+            'salary'        => ['nullable', 'integer', 'min:0'],
             'team'          => ['nullable', 'string', 'max:255'],
             'notes'         => ['nullable', 'string'],
         ]);
