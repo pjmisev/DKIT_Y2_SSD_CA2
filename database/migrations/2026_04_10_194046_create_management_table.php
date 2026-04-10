@@ -11,20 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('players', function (Blueprint $table) {
+        Schema::create('management', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
-            $table->string('position')->nullable();
             $table->string('team')->nullable();
-            $table->unsignedTinyInteger('jersey_number')->nullable();
             $table->string('nationality')->nullable();
-            $table->string('dominant_hand', 10)->nullable(); 
-            $table->unsignedSmallInteger('height_cm')->nullable();
-            $table->unsignedSmallInteger('weight_kg')->nullable();
-            $table->string('health_status', 20)->default('fit');
-            $table->unsignedBigInteger('salary')->nullable();
             $table->date('date_of_birth')->nullable();
+            $table->unsignedBigInteger('salary')->nullable();
             $table->text('notes')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
             $table->foreignId('linked_to')->constrained('users')->onDelete('cascade');
@@ -37,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('players');
+        Schema::dropIfExists('management');
     }
 };
