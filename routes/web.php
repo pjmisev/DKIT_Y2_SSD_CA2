@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\CoachController;
+use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,10 +17,11 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    // All authenticated users can view players and events
+    // All authenticated users can view players, events, coaches, and management
     Route::get('players', [PlayerController::class, 'index'])->name('players.index');
     Route::get('events', [EventController::class, 'index'])->name('events.index');
     Route::get('coaches', [CoachController::class, 'index'])->name('coaches.index');
+    Route::get('management', [ManagementController::class, 'index'])->name('management.index');
 
     // Admin-only: manage players, events, and users
     Route::middleware('admin')->group(function () {
@@ -34,6 +36,12 @@ Route::middleware('auth')->group(function () {
         Route::get('coaches/{coach}/edit', [CoachController::class, 'edit'])->name('coaches.edit');
         Route::match(['PUT', 'PATCH'], 'coaches/{coach}', [CoachController::class, 'update'])->name('coaches.update');
         Route::delete('coaches/{coach}', [CoachController::class, 'destroy'])->name('coaches.destroy');
+
+        Route::get('management/create', [ManagementController::class, 'create'])->name('management.create');
+        Route::post('management', [ManagementController::class, 'store'])->name('management.store');
+        Route::get('management/{management}/edit', [ManagementController::class, 'edit'])->name('management.edit');
+        Route::match(['PUT', 'PATCH'], 'management/{management}', [ManagementController::class, 'update'])->name('management.update');
+        Route::delete('management/{management}', [ManagementController::class, 'destroy'])->name('management.destroy');
 
         Route::get('events/create', [EventController::class, 'create'])->name('events.create');
         Route::post('events', [EventController::class, 'store'])->name('events.store');
@@ -50,6 +58,7 @@ Route::middleware('auth')->group(function () {
     Route::get('players/{player}', [PlayerController::class, 'show'])->name('players.show');
     Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
     Route::get('coaches/{coach}', [CoachController::class, 'show'])->name('coaches.show');
+    Route::get('management/{management}', [ManagementController::class, 'show'])->name('management.show');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
