@@ -6,11 +6,17 @@ use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $events = Event::where('start_time', '>=', now())
+        ->orderBy('start_time')
+        ->take(6)
+        ->get();
+
+    return view('welcome', compact('events'));
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
