@@ -20,6 +20,12 @@
                         class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
                         Dashboard
                     </a>
+                    @if (request()->routeIs('dashboard'))
+                        <a href="{{ route('home') }}"
+                            class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('home') ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
+                            Home
+                        </a>
+                    @endif
                     <a href="{{ route('players.index') }}"
                         class="px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('players.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50' }}">
                         Players
@@ -93,6 +99,12 @@
                 class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('dashboard') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 Dashboard
             </a>
+            @if (request()->routeIs('dashboard'))
+                <a href="{{ route('home') }}"
+                    class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('home') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
+                    Home
+                </a>
+            @endif
             <a href="{{ route('players.index') }}"
                 class="block px-3 py-2 rounded-lg text-sm font-medium transition-colors {{ request()->routeIs('players.*') ? 'bg-gray-100 text-gray-900' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900' }}">
                 Players
