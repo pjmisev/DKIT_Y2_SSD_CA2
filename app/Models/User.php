@@ -26,6 +26,8 @@ class User extends Authenticatable
         'position',
         'salary',
         'status',
+        'auth_provider',
+        'auth_provider_id',
     ];
 
     public function isAdmin(): bool
