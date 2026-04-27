@@ -15,17 +15,22 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-50 court-pattern">
-            @include('layouts.navigation')
+        <div class="relative min-h-screen bg-gray-50 overflow-hidden">
+            <!-- Background Image -->
+            <div class="fixed inset-0 bg-center bg-cover opacity-[0.06]" style="background-image: url('{{ asset('images/login-bg.jpg') }}');"></div>
+            <div class="fixed inset-0 bg-gradient-to-b from-gray-50/90 via-gray-50/95 to-gray-50"></div>
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white/80 backdrop-blur-md border-b border-gray-100/50 shadow-sm">
-                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <div class="relative z-10">
+                @include('layouts.navigation')
+
+                <!-- Page Heading -->
+                @isset($header)
+                    <header class="bg-white/80 backdrop-blur-md border-b border-gray-100/50 shadow-sm">
+                        <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                            {{ $header }}
+                        </div>
+                    </header>
+                @endisset
 
                 <!-- Page Content -->
                 <main>

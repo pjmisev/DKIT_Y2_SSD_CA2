@@ -8,8 +8,11 @@
 </head>
 <body class="bg-gray-950 text-white antialiased">
     <div class="min-h-screen relative overflow-hidden">
-        <!-- Animated Background -->
-        <div class="absolute inset-0 overflow-hidden">
+        <!-- Background Image with Overlays -->
+        <div class="absolute inset-0">
+            <div class="absolute inset-0 bg-center bg-cover opacity-20" style="background-image: url('{{ asset('images/login-bg.jpg') }}');"></div>
+            <div class="absolute inset-0 bg-gradient-to-b from-gray-950/80 via-gray-950/70 to-gray-950"></div>
+            <!-- Gradient orbs -->
             <div class="absolute -top-40 -right-40 w-96 h-96 bg-hoop-500/20 rounded-full blur-3xl animate-pulse-soft"></div>
             <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-hoop-600/10 rounded-full blur-3xl animate-pulse-soft" style="animation-delay: 1s;"></div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-hoop-500/5 rounded-full blur-3xl"></div>

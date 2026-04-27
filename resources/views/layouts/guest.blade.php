@@ -18,6 +18,8 @@
         <div class="min-h-screen relative flex flex-col items-center justify-center px-4 py-12">
             <!-- Animated Background -->
             <div class="absolute inset-0 overflow-hidden">
+                <div class="absolute inset-0 bg-center bg-cover opacity-25" style="background-image: url('{{ asset('images/login-bg.jpg') }}');"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-gray-950/80 via-gray-950/70 to-gray-950"></div>
                 <div class="absolute -top-40 -right-40 w-96 h-96 bg-hoop-500/20 rounded-full blur-3xl animate-pulse-soft"></div>
                 <div class="absolute -bottom-40 -left-40 w-96 h-96 bg-hoop-600/10 rounded-full blur-3xl animate-pulse-soft" style="animation-delay: 1s;"></div>
                 <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 60px 60px;"></div>
