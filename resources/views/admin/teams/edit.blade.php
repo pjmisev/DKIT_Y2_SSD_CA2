@@ -1,75 +1,46 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">
-            <a href="{{ route('admin.teams.index') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <a href="{{ route('admin.teams.index') }}" class="page-header-back">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Team</h2>
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Team</h2>
+                <p class="text-sm text-gray-500">Update team details</p>
+            </div>
         </div>
     </x-slot>
 
     <div class="py-10">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
-
-                <div class="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100">
-                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg" style="background-color: {{ $team->theme_color }}">
-                        {{ strtoupper(substr($team->name, 0, 2)) }}
-                    </div>
-                    <div>
-                        <div class="font-semibold text-gray-900">{{ $team->name }}</div>
-                        <div class="text-sm text-gray-400">{{ $team->users_count ?? $team->users()->count() }} member{{ ($team->users_count ?? $team->users()->count()) !== 1 ? 's' : '' }}</div>
-                    </div>
-                </div>
-
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
                 <form method="POST" action="{{ route('admin.teams.update', $team) }}" class="space-y-6">
                     @csrf
                     @method('PATCH')
 
                     <div>
-                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-1.5">Team Name <span class="text-red-500">*</span></label>
+                        <label for="name" class="form-label">Team Name <span class="text-red-500">*</span></label>
                         <input type="text" name="name" id="name" value="{{ old('name', $team->name) }}" required
-                            class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-violet-500 focus:ring-violet-500 @error('name') border-red-400 @enderror"
-                            placeholder="e.g. Boston Celtics">
-                        @error('name') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                            class="input-field @error('name') border-red-400 @enderror">
+                        @error('name') <p class="form-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label for="theme_color" class="block text-sm font-semibold text-gray-700 mb-1.5">Theme Colour <span class="text-red-500">*</span></label>
-                        <div class="flex items-center gap-4">
-                            <input type="color" name="theme_color" id="color_picker" value="{{ old('theme_color', $team->theme_color) }}" required
-                                class="w-12 h-12 rounded-lg border border-gray-300 cursor-pointer p-0.5">
-                            <input type="text" id="hex_input" value="{{ old('theme_color', $team->theme_color) }}"
-                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-violet-500 focus:ring-violet-500 font-mono uppercase @error('theme_color') border-red-400 @enderror"
-                                placeholder="#EA580C" maxlength="7">
-                        </div>
-                        @error('theme_color') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
-                        <p class="mt-1.5 text-xs text-gray-400">This colour will replace the orange accent throughout the app for users on this team.</p>
+                        <label for="description" class="form-label">Description</label>
+                        <textarea name="description" id="description" rows="3"
+                            class="input-field @error('description') border-red-400 @enderror">{{ old('description', $team->description) }}</textarea>
+                        @error('description') <p class="form-error">{{ $message }}</p> @enderror
                     </div>
 
-                    <div class="flex items-center justify-between pt-2">
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
                         <a href="{{ route('admin.teams.index') }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">Cancel</a>
-                        <button type="submit" class="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
-                            Save Changes
+                        <button type="submit" class="btn-primary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                            Update Team
                         </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-
-    @push('scripts')
-    <script>
-        document.getElementById('color_picker').addEventListener('input', function() {
-            document.getElementById('hex_input').value = this.value.toUpperCase();
-        });
-
-        document.getElementById('hex_input').addEventListener('input', function() {
-            const val = this.value.trim();
-            if (/^#[a-fA-F0-9]{6}$/.test(val)) {
-                document.getElementById('color_picker').value = val.toLowerCase();
-            }
-        });
-    </script>
-    @endpush
 </x-app-layout>
