@@ -7,7 +7,11 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-gray-100 text-gray-900">
-    <div class="min-h-screen">
+    <div class="relative min-h-screen overflow-hidden">
+        <div class="absolute inset-0 bg-center bg-cover opacity-35" style="background-image: url('{{ asset('images/login-bg.jpg') }}');"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-gray-100/45 via-gray-100/60 to-gray-100/75"></div>
+
+        <div class="relative z-10">
         <header style="background-color: #ea580c;" class="text-white shadow-md">
             <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
                 <div>
@@ -75,6 +79,7 @@
                 </div>
             </div>
         </main>
+        </div>
     </div>
 </body>
 </html>
