@@ -2,176 +2,254 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Coach;
-use App\Models\Management;
-use App\Models\Player;
+use App\Models\PlayerInfo;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class PlayerController extends Controller
 {
     /**
-     * User IDs already linked to any entity, optionally excluding one user ID
-     * (used on edit so the current link stays selectable).
+     * Get users who can be assigned a player profile (users without any profile yet).
      */
-    private function takenUserIds(?int $exceptUserId = null): array
+    private function availableUsers(?int $exceptUserId = null): array
     {
-        return collect([
-            Player::whereNotNull('linked_to')->pluck('linked_to'),
-            Coach::whereNotNull('linked_to')->pluck('linked_to'),
-            Management::whereNotNull('linked_to')->pluck('linked_to'),
-        ])->flatten()->unique()->reject(fn ($id) => $id === $exceptUserId)->values()->all();
+        return User::whereDoesntHave('profile')
+            ->when($exceptUserId, fn ($q) => $q->orWhere('id', $exceptUserId))
+            ->orderBy('name')
+            ->get()
+            ->all();
     }
 
     public function index(Request $request): View
     {
-        $query = Player::query();
+        $query = Profile::where('profileable_type', PlayerInfo::class)
+            ->with(['user', 'profileable']);
 
         if ($search = $request->input('search')) {
-            $query->where(function ($q) use ($search) {
+            $query->whereHas('user', function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('email', 'like', "%{$search}%");
             });
         }
 
         if ($position = $request->input('position')) {
-            $query->where('position', $position);
+            $query->whereHasMorph('profileable', [PlayerInfo::class], function ($q) use ($position) {
+                $q->where('position', $position);
+            });
         }
 
         if ($health = $request->input('health_status')) {
-            $query->where('health_status', $health);
+            $query->whereHasMorph('profileable', [PlayerInfo::class], function ($q) use ($health) {
+                $q->where('health_status', $health);
+            });
         }
 
         if ($team = $request->input('team')) {
             $query->where('team', 'like', "%{$team}%");
         }
 
-        $players = $query->orderBy('name')->get();
+        $profiles = $query->orderBy('id')->get();
 
         return view('players.index', [
-            'players'        => $players,
-            'positions'      => Player::POSITIONS,
-            'healthStatuses' => Player::HEALTH_STATUSES,
+            'profiles'       => $profiles,
+            'positions'      => PlayerInfo::POSITIONS,
+            'healthStatuses' => PlayerInfo::HEALTH_STATUSES,
         ]);
     }
 
     public function create(): View
     {
         return view('players.create', [
-            'positions'      => Player::POSITIONS,
-            'healthStatuses' => Player::HEALTH_STATUSES,
-            'users'          => User::whereNotIn('id', $this->takenUserIds())->orderBy('name')->get(),
+            'positions'      => PlayerInfo::POSITIONS,
+            'healthStatuses' => PlayerInfo::HEALTH_STATUSES,
+            'users'          => User::doesntHave('profile')->orderBy('name')->get(),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $validated = $request->validate([
+            // User fields
             'name'          => ['required', 'string', 'max:255'],
-            'email'         => ['nullable', 'email', 'max:255'],
-            'jersey_number' => ['nullable', 'integer', 'min:0', 'max:99'],
-            'date_of_birth' => ['nullable', 'date', 'before:today'],
-            'position'      => ['nullable', 'string', 'max:100'],
+            'email'         => ['required', 'email', 'max:255', 'unique:users'],
+            'password'      => ['required', 'confirmed', Password::defaults()],
+            'salary'        => ['nullable', 'integer', 'min:0'],
+            'status'        => ['boolean'],
+
+            // Profile fields
+            'team'          => ['nullable', 'string', 'max:255'],
             'nationality'   => ['nullable', 'string', 'max:100'],
+            'date_of_birth' => ['nullable', 'date', 'before:today'],
+            'notes'         => ['nullable', 'string'],
+            'image'         => ['nullable', 'image', 'max:2048'],
+
+            // Player-specific fields
+            'jersey_number' => ['nullable', 'integer', 'min:0', 'max:99'],
+            'position'      => ['nullable', 'string', 'max:100'],
             'dominant_hand' => ['nullable', Rule::in(['left', 'right'])],
             'height_cm'     => ['nullable', 'integer', 'min:100', 'max:250'],
             'weight_kg'     => ['nullable', 'integer', 'min:30', 'max:200'],
-            'health_status' => ['required', Rule::in(Player::HEALTH_STATUSES)],
-            'salary'        => ['nullable', 'integer', 'min:0'],
-            'team'          => ['nullable', 'string', 'max:255'],
-            'notes'         => ['nullable', 'string'],
-            'linked_to'     => ['nullable', 'exists:users,id', function ($_, $value, $fail) {
-                if (!$value) return;
-                $taken = Player::where('linked_to', $value)->exists()
-                      || Coach::where('linked_to', $value)->exists()
-                      || Management::where('linked_to', $value)->exists();
-                if ($taken) {
-                    $fail('This user is already linked to another player, coach, or management member.');
-                }
-            }],
-            'image'         => ['nullable', 'image', 'max:2048'],
+            'health_status' => ['required', Rule::in(PlayerInfo::HEALTH_STATUSES)],
         ]);
 
-        $validated['created_by'] = Auth::id();
+        // Create the user
+        $user = User::create([
+            'name'     => $validated['name'],
+            'email'    => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'role'     => 'player',
+            'salary'   => $validated['salary'] ?? null,
+            'status'   => $request->boolean('status', true),
+        ]);
 
-        if (isset($validated['image'])) {
-            $validated['image'] = $request->file('image')->store('images/players', 'public');
+        // Create the player info
+        $playerInfo = PlayerInfo::create([
+            'jersey_number' => $validated['jersey_number'] ?? null,
+            'position'      => $validated['position'] ?? null,
+            'dominant_hand' => $validated['dominant_hand'] ?? null,
+            'height_cm'     => $validated['height_cm'] ?? null,
+            'weight_kg'     => $validated['weight_kg'] ?? null,
+            'health_status' => $validated['health_status'],
+        ]);
+
+        // Create the profile linking user to player info
+        $profileData = [
+            'user_id'          => $user->id,
+            'profileable_type' => PlayerInfo::class,
+            'profileable_id'   => $playerInfo->id,
+            'team'             => $validated['team'] ?? null,
+            'nationality'      => $validated['nationality'] ?? null,
+            'date_of_birth'    => $validated['date_of_birth'] ?? null,
+            'notes'            => $validated['notes'] ?? null,
+        ];
+
+        if ($request->hasFile('image')) {
+            $profileData['image'] = $request->file('image')->store('images/players', 'public');
         }
 
-        Player::create($validated);
+        Profile::create($profileData);
 
         return redirect()->route('players.index')->with('status', 'player-created');
     }
 
-    public function show(Player $player): View
+    public function show(Profile $profile): View
     {
-        return view('players.show', compact('player'));
+        // Ensure it's a player profile
+        abort_if($profile->profileable_type !== PlayerInfo::class, 404);
+
+        return view('players.show', compact('profile'));
     }
 
-    public function edit(Player $player): View
+    public function edit(Profile $profile): View
     {
+        abort_if($profile->profileable_type !== PlayerInfo::class, 404);
+
         return view('players.edit', [
-            'player'         => $player,
-            'positions'      => Player::POSITIONS,
-            'healthStatuses' => Player::HEALTH_STATUSES,
-            'users'          => User::whereNotIn('id', $this->takenUserIds($player->linked_to))->orderBy('name')->get(),
+            'profile'        => $profile,
+            'positions'      => PlayerInfo::POSITIONS,
+            'healthStatuses' => PlayerInfo::HEALTH_STATUSES,
         ]);
     }
 
-    public function update(Request $request, Player $player): RedirectResponse
+    public function update(Request $request, Profile $profile): RedirectResponse
     {
+        abort_if($profile->profileable_type !== PlayerInfo::class, 404);
+
+        $user = $profile->user;
+        $playerInfo = $profile->profileable;
+
         $validated = $request->validate([
+            // User fields
             'name'          => ['required', 'string', 'max:255'],
-            'email'         => ['nullable', 'email', 'max:255'],
-            'jersey_number' => ['nullable', 'integer', 'min:0', 'max:99'],
-            'date_of_birth' => ['nullable', 'date', 'before:today'],
-            'position'      => ['nullable', 'string', 'max:100'],
+            'email'         => ['required', 'email', 'max:255', 'unique:users,email,' . $user->id],
+            'password'      => ['nullable', 'confirmed', Password::defaults()],
+            'salary'        => ['nullable', 'integer', 'min:0'],
+            'status'        => ['boolean'],
+
+            // Profile fields
+            'team'          => ['nullable', 'string', 'max:255'],
             'nationality'   => ['nullable', 'string', 'max:100'],
+            'date_of_birth' => ['nullable', 'date', 'before:today'],
+            'notes'         => ['nullable', 'string'],
+            'image'         => ['nullable', 'image', 'max:2048'],
+
+            // Player-specific fields
+            'jersey_number' => ['nullable', 'integer', 'min:0', 'max:99'],
+            'position'      => ['nullable', 'string', 'max:100'],
             'dominant_hand' => ['nullable', Rule::in(['left', 'right'])],
             'height_cm'     => ['nullable', 'integer', 'min:100', 'max:250'],
             'weight_kg'     => ['nullable', 'integer', 'min:30', 'max:200'],
-            'health_status' => ['required', Rule::in(Player::HEALTH_STATUSES)],
-            'salary'        => ['nullable', 'integer', 'min:0'],
-            'team'          => ['nullable', 'string', 'max:255'],
-            'notes'         => ['nullable', 'string'],
-            'linked_to'     => ['nullable', 'exists:users,id', function ($attr, $value, $fail) use ($player) {
-                if (!$value) return;
-                $taken = Player::where('linked_to', $value)->where('id', '!=', $player->id)->exists()
-                      || Coach::where('linked_to', $value)->exists()
-                      || Management::where('linked_to', $value)->exists();
-                if ($taken) {
-                    $fail('This user is already linked to another player, coach, or management member.');
-                }
-            }],
-            'image'         => ['nullable', 'image', 'max:2048'],
+            'health_status' => ['required', Rule::in(PlayerInfo::HEALTH_STATUSES)],
         ]);
 
-        if (isset($validated['image'])) {
-            if ($player->image) {
-                Storage::disk('public')->delete($player->image);
-            }
-            $validated['image'] = $request->file('image')->store('images/players', 'public');
-        } else {
-            unset($validated['image']);
+        // Update user
+        $userData = [
+            'name'   => $validated['name'],
+            'email'  => $validated['email'],
+            'salary' => $validated['salary'] ?? null,
+            'status' => $request->boolean('status'),
+        ];
+
+        if (!empty($validated['password'])) {
+            $userData['password'] = Hash::make($validated['password']);
         }
 
-        $player->update($validated);
+        $user->update($userData);
 
-        return redirect()->route('players.show', $player)->with('status', 'player-updated');
+        // Update player info
+        $playerInfo->update([
+            'jersey_number' => $validated['jersey_number'] ?? null,
+            'position'      => $validated['position'] ?? null,
+            'dominant_hand' => $validated['dominant_hand'] ?? null,
+            'height_cm'     => $validated['height_cm'] ?? null,
+            'weight_kg'     => $validated['weight_kg'] ?? null,
+            'health_status' => $validated['health_status'],
+        ]);
+
+        // Update profile
+        $profileData = [
+            'team'          => $validated['team'] ?? null,
+            'nationality'   => $validated['nationality'] ?? null,
+            'date_of_birth' => $validated['date_of_birth'] ?? null,
+            'notes'         => $validated['notes'] ?? null,
+        ];
+
+        if ($request->hasFile('image')) {
+            if ($profile->image) {
+                Storage::disk('public')->delete($profile->image);
+            }
+            $profileData['image'] = $request->file('image')->store('images/players', 'public');
+        }
+
+        $profile->update($profileData);
+
+        return redirect()->route('players.show', $profile)->with('status', 'player-updated');
     }
 
-    public function destroy(Player $player): RedirectResponse
+    public function destroy(Profile $profile): RedirectResponse
     {
-        if ($player->image) {
-            Storage::disk('public')->delete($player->image);
+        abort_if($profile->profileable_type !== PlayerInfo::class, 404);
+
+        if ($profile->image) {
+            Storage::disk('public')->delete($profile->image);
         }
 
-        $player->delete();
+        $user = $profile->user;
+
+        // Delete profile and player info (cascade handles profile)
+        $profile->profileable()->delete();
+        $profile->delete();
+
+        // Optionally delete the user too
+        $user->delete();
 
         return redirect()->route('players.index')->with('status', 'player-deleted');
     }

@@ -6,6 +6,7 @@ use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,21 +28,21 @@ Route::middleware('auth')->group(function () {
     Route::middleware('admin')->group(function () {
         Route::get('players/create', [PlayerController::class, 'create'])->name('players.create');
         Route::post('players', [PlayerController::class, 'store'])->name('players.store');
-        Route::get('players/{player}/edit', [PlayerController::class, 'edit'])->name('players.edit');
-        Route::match(['PUT', 'PATCH'], 'players/{player}', [PlayerController::class, 'update'])->name('players.update');
-        Route::delete('players/{player}', [PlayerController::class, 'destroy'])->name('players.destroy');
+        Route::get('players/{profile}/edit', [PlayerController::class, 'edit'])->name('players.edit');
+        Route::match(['PUT', 'PATCH'], 'players/{profile}', [PlayerController::class, 'update'])->name('players.update');
+        Route::delete('players/{profile}', [PlayerController::class, 'destroy'])->name('players.destroy');
 
         Route::get('coaches/create', [CoachController::class, 'create'])->name('coaches.create');
         Route::post('coaches', [CoachController::class, 'store'])->name('coaches.store');
-        Route::get('coaches/{coach}/edit', [CoachController::class, 'edit'])->name('coaches.edit');
-        Route::match(['PUT', 'PATCH'], 'coaches/{coach}', [CoachController::class, 'update'])->name('coaches.update');
-        Route::delete('coaches/{coach}', [CoachController::class, 'destroy'])->name('coaches.destroy');
+        Route::get('coaches/{profile}/edit', [CoachController::class, 'edit'])->name('coaches.edit');
+        Route::match(['PUT', 'PATCH'], 'coaches/{profile}', [CoachController::class, 'update'])->name('coaches.update');
+        Route::delete('coaches/{profile}', [CoachController::class, 'destroy'])->name('coaches.destroy');
 
         Route::get('management/create', [ManagementController::class, 'create'])->name('management.create');
         Route::post('management', [ManagementController::class, 'store'])->name('management.store');
-        Route::get('management/{management}/edit', [ManagementController::class, 'edit'])->name('management.edit');
-        Route::match(['PUT', 'PATCH'], 'management/{management}', [ManagementController::class, 'update'])->name('management.update');
-        Route::delete('management/{management}', [ManagementController::class, 'destroy'])->name('management.destroy');
+        Route::get('management/{profile}/edit', [ManagementController::class, 'edit'])->name('management.edit');
+        Route::match(['PUT', 'PATCH'], 'management/{profile}', [ManagementController::class, 'update'])->name('management.update');
+        Route::delete('management/{profile}', [ManagementController::class, 'destroy'])->name('management.destroy');
 
         Route::get('events/create', [EventController::class, 'create'])->name('events.create');
         Route::post('events', [EventController::class, 'store'])->name('events.store');
@@ -55,10 +56,10 @@ Route::middleware('auth')->group(function () {
         });
     });
 
-    Route::get('players/{player}', [PlayerController::class, 'show'])->name('players.show');
+    Route::get('players/{profile}', [PlayerController::class, 'show'])->name('players.show');
     Route::get('events/{event}', [EventController::class, 'show'])->name('events.show');
-    Route::get('coaches/{coach}', [CoachController::class, 'show'])->name('coaches.show');
-    Route::get('management/{management}', [ManagementController::class, 'show'])->name('management.show');
+    Route::get('coaches/{profile}', [CoachController::class, 'show'])->name('coaches.show');
+    Route::get('management/{profile}', [ManagementController::class, 'show'])->name('management.show');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

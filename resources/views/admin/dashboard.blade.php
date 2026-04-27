@@ -26,7 +26,7 @@
                             <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Player::count() }}</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Profile::where('profileable_type', \App\Models\PlayerInfo::class)->count() }}</div>
                             <div class="text-sm text-gray-500">Players</div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                             <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Coach::count() }}</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Profile::where('profileable_type', \App\Models\CoachInfo::class)->count() }}</div>
                             <div class="text-sm text-gray-500">Coaches</div>
                         </div>
                     </div>
@@ -52,7 +52,7 @@
                             <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6a4 4 0 11-8 0 4 4 0 018 0zM12 11v1m0 4h.01"/></svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Management::count() }}</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Profile::where('profileable_type', \App\Models\ManagementInfo::class)->count() }}</div>
                             <div class="text-sm text-gray-500">Management</div>
                         </div>
                     </div>

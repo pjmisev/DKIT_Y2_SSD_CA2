@@ -18,7 +18,7 @@
                             </svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Player::count() }}</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Profile::where('profileable_type', \App\Models\PlayerInfo::class)->count() }}</div>
                             <div class="text-sm text-gray-500">Players</div>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                             </svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Coach::count() }}</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Profile::where('profileable_type', \App\Models\CoachInfo::class)->count() }}</div>
                             <div class="text-sm text-gray-500">Coaches</div>
                         </div>
                     </div>
@@ -50,7 +50,7 @@
                             </svg>
                         </div>
                         <div>
-                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Management::count() }}</div>
+                            <div class="text-2xl font-bold text-gray-800">{{ \App\Models\Profile::where('profileable_type', \App\Models\ManagementInfo::class)->count() }}</div>
                             <div class="text-sm text-gray-500">Management</div>
                         </div>
                     </div>
