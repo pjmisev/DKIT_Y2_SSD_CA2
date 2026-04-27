@@ -15,15 +15,21 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+        <div class="relative min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 overflow-hidden">
+            @if (request()->routeIs('login'))
+                <div class="absolute inset-0 bg-center bg-cover opacity-70" style="background-image: url('{{ asset('images/login-bg.jpg') }}');"></div>
+                <div class="absolute inset-0 bg-gray-900/25"></div>
+                <div class="absolute inset-0 bg-gradient-to-b from-orange-600/25 via-transparent to-gray-100/35"></div>
+            @endif
+
             <div>
                 <a href="/" class="flex flex-col items-center">
-                    <span class="text-2xl font-bold text-orange-600 leading-tight">Hoops Club</span>
-                    <span class="text-xs text-gray-500">Basketball Manager</span>
+                    <span class="text-2xl font-bold leading-tight {{ request()->routeIs('login') ? 'text-white drop-shadow-sm' : 'text-orange-600' }}">Hoops Club</span>
+                    <span class="text-xs {{ request()->routeIs('login') ? 'text-orange-100' : 'text-gray-500' }}">Basketball Manager</span>
                 </a>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <div class="relative w-full sm:max-w-md mt-6 px-6 py-4 bg-white/95 shadow-md overflow-hidden sm:rounded-lg border border-white/70 backdrop-blur-sm">
                 {{ $slot }}
             </div>
         </div>
