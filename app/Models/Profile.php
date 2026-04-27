@@ -12,7 +12,7 @@ class Profile extends Model
         'user_id',
         'profileable_type',
         'profileable_id',
-        'team',
+        'team_id',
         'nationality',
         'date_of_birth',
         'notes',
@@ -34,6 +34,14 @@ class Profile extends Model
     public function profileable(): MorphTo
     {
         return $this->morphTo();
+    }
+
+    /**
+     * Get the team this profile belongs to.
+     */
+    public function team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class);
     }
 
     /**

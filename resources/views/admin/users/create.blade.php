@@ -61,6 +61,21 @@
                         </div>
 
                         <div class="col-span-2">
+                            <label for="team_id" class="block text-sm font-semibold text-gray-700 mb-1.5">Team</label>
+                            <select name="team_id" id="team_id"
+                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-violet-500 focus:ring-violet-500 @error('team_id') border-red-400 @enderror">
+                                <option value="">— No Team —</option>
+                                @foreach ($teams as $team)
+                                    <option value="{{ $team->id }}" {{ old('team_id') == $team->id ? 'selected' : '' }}
+                                        style="--team-color: {{ $team->theme_color }}">
+                                        {{ $team->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('team_id') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                        </div>
+
+                        <div class="col-span-2">
                             <label for="salary" class="block text-sm font-semibold text-gray-700 mb-1.5">Salary (€) <span class="text-red-500">*</span></label>
                             <input type="number" name="salary" id="salary" value="{{ old('salary', 0) }}" min="0" required
                                 class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-violet-500 focus:ring-violet-500 @error('salary') border-red-400 @enderror">

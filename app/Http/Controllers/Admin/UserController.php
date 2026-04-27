@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -14,14 +15,16 @@ class UserController extends Controller
 {
     public function index(): View
     {
-        $users = User::orderBy('name')->get();
+        $users = User::with('team')->orderBy('name')->get();
 
         return view('admin.users.index', compact('users'));
     }
 
     public function create(): View
     {
-        return view('admin.users.create');
+        $teams = Team::orderBy('name')->get();
+
+        return view('admin.users.create', compact('teams'));
     }
 
     public function store(Request $request): RedirectResponse
@@ -34,6 +37,7 @@ class UserController extends Controller
             'position' => ['nullable', 'string', 'max:255'],
             'salary'   => ['required', 'integer', 'min:0'],
             'status'   => ['boolean'],
+            'team_id'  => ['nullable', 'integer', 'exists:teams,id'],
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
@@ -46,7 +50,9 @@ class UserController extends Controller
 
     public function edit(User $user): View
     {
-        return view('admin.users.edit', compact('user'));
+        $teams = Team::orderBy('name')->get();
+
+        return view('admin.users.edit', compact('user', 'teams'));
     }
 
     public function update(Request $request, User $user): RedirectResponse
@@ -59,6 +65,7 @@ class UserController extends Controller
             'position' => ['nullable', 'string', 'max:255'],
             'salary'   => ['required', 'integer', 'min:0'],
             'status'   => ['boolean'],
+            'team_id'  => ['nullable', 'integer', 'exists:teams,id'],
         ]);
 
         if (! empty($validated['password'])) {

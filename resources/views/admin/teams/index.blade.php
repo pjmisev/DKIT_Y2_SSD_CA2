@@ -1,0 +1,79 @@
+<x-app-layout>
+    <x-slot name="header">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="{{ route('admin.dashboard') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </a>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Teams</h2>
+            </div>
+            <a href="{{ route('admin.teams.create') }}" class="inline-flex items-center gap-2 bg-violet-600 hover:bg-violet-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                Add Team
+            </a>
+        </div>
+    </x-slot>
+
+    <div class="py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            @if (session('status'))
+                <div class="mb-6 flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 text-sm rounded-xl px-4 py-3">
+                    <svg class="w-4 h-4 shrink-0 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+                    @if (session('status') === 'team-created')
+                        Team created successfully.
+                    @elseif (session('status') === 'team-updated')
+                        Team updated successfully.
+                    @elseif (session('status') === 'team-deleted')
+                        Team deleted successfully.
+                    @elseif (session('status') === 'team-has-members')
+                        <span class="text-amber-800">Cannot delete a team that has members. Reassign or remove members first.</span>
+                    @endif
+                </div>
+            @endif
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse ($teams as $team)
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-all duration-200">
+                        <div class="h-2" style="background-color: {{ $team->theme_color }}"></div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm" style="background-color: {{ $team->theme_color }}">
+                                        {{ strtoupper(substr($team->name, 0, 2)) }}
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-900">{{ $team->name }}</h3>
+                                        <p class="text-xs text-gray-400">{{ $team->users_count }} member{{ $team->users_count !== 1 ? 's' : '' }}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <span class="w-5 h-5 rounded-full border border-gray-200" style="background-color: {{ $team->theme_color }}" title="{{ $team->theme_color }}"></span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                                <span class="text-xs text-gray-400 font-mono">{{ $team->theme_color }}</span>
+                                <div class="flex items-center gap-3">
+                                    <a href="{{ route('admin.teams.edit', $team) }}" class="text-sm text-indigo-600 hover:text-indigo-800 font-medium transition-colors">Edit</a>
+                                    <form method="POST" action="{{ route('admin.teams.destroy', $team) }}" class="inline">
+                                        @csrf @method('DELETE')
+                                        <button type="submit" onclick="return confirm('Delete {{ addslashes($team->name) }}?')" class="text-sm text-red-500 hover:text-red-700 font-medium transition-colors">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-span-full text-center py-16">
+                        <svg class="w-12 h-12 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <p class="text-gray-400 text-sm">No teams created yet.</p>
+                        <a href="{{ route('admin.teams.create') }}" class="inline-flex items-center gap-2 mt-4 text-sm text-violet-600 hover:text-violet-700 font-medium">
+                            Create your first team &rarr;
+                        </a>
+                    </div>
+                @endforelse
+            </div>
+
+        </div>
+    </div>
+</x-app-layout>

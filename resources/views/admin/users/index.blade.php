@@ -30,6 +30,7 @@
                         <tr>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Team</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Position</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Salary</th>
@@ -52,6 +53,16 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 text-sm text-gray-500">{{ $user->email }}</td>
+                                <td class="px-6 py-4">
+                                    @if ($user->team)
+                                        <div class="flex items-center gap-2">
+                                            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: {{ $user->team->theme_color }}"></span>
+                                            <span class="text-sm text-gray-600">{{ $user->team->name }}</span>
+                                        </div>
+                                    @else
+                                        <span class="text-sm text-gray-400">—</span>
+                                    @endif
+                                </td>
                                 <td class="px-6 py-4">
                                     <span class="text-xs font-semibold capitalize px-2.5 py-1 rounded-full
                                         {{ $user->role === 'admin' ? 'bg-violet-100 text-violet-700' : 'bg-gray-100 text-gray-600' }}">
@@ -77,7 +88,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="px-6 py-12 text-center text-sm text-gray-400">No users found.</td>
+                                <td colspan="8" class="px-6 py-12 text-center text-sm text-gray-400">No users found.</td>
                             </tr>
                         @endforelse
                     </tbody>

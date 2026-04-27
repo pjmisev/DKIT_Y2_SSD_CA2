@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TeamController as AdminTeamController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\PlayerController;
@@ -53,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/', fn () => view('admin.dashboard'))->name('dashboard');
             Route::resource('users', AdminUserController::class)->except(['show']);
+            Route::resource('teams', AdminTeamController::class)->except(['show']);
         });
     });
 
