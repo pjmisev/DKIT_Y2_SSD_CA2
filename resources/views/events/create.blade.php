@@ -1,77 +1,80 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center gap-3">
-            <a href="{{ route('events.index') }}" class="text-gray-400 hover:text-gray-600 transition-colors">
+            <a href="{{ route('events.index') }}" class="page-header-back">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Add Event</h2>
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Add Event</h2>
+                <p class="text-sm text-gray-500">Schedule a new event</p>
+            </div>
         </div>
     </x-slot>
 
     <div class="py-10">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-8">
+            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
                 <form method="POST" action="{{ route('events.store') }}" class="space-y-6">
                     @csrf
 
                     <div>
-                        <label for="name" class="block text-sm font-semibold text-gray-700 mb-1.5">Event Name <span class="text-red-500">*</span></label>
+                        <label for="name" class="form-label">Event Name <span class="text-red-500">*</span></label>
                         <input type="text" name="name" id="name" value="{{ old('name') }}" required
-                            class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-orange-500 focus:ring-orange-500 @error('name') border-red-400 @enderror">
-                        @error('name') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                            class="input-field @error('name') border-red-400 @enderror">
+                        @error('name') <p class="form-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div>
-                        <label for="description" class="block text-sm font-semibold text-gray-700 mb-1.5">Description</label>
+                        <label for="description" class="form-label">Description</label>
                         <textarea name="description" id="description" rows="3"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-orange-500 focus:ring-orange-500 @error('description') border-red-400 @enderror">{{ old('description') }}</textarea>
-                        @error('description') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                            class="input-field @error('description') border-red-400 @enderror">{{ old('description') }}</textarea>
+                        @error('description') <p class="form-error">{{ $message }}</p> @enderror
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label for="start_time" class="block text-sm font-semibold text-gray-700 mb-1.5">Start <span class="text-red-500">*</span></label>
+                            <label for="start_time" class="form-label">Start <span class="text-red-500">*</span></label>
                             <input type="datetime-local" name="start_time" id="start_time" value="{{ old('start_time') }}" required
-                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-orange-500 focus:ring-orange-500 @error('start_time') border-red-400 @enderror">
-                            @error('start_time') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                                class="input-field @error('start_time') border-red-400 @enderror">
+                            @error('start_time') <p class="form-error">{{ $message }}</p> @enderror
                         </div>
                         <div>
-                            <label for="end_time" class="block text-sm font-semibold text-gray-700 mb-1.5">End <span class="text-red-500">*</span></label>
+                            <label for="end_time" class="form-label">End <span class="text-red-500">*</span></label>
                             <input type="datetime-local" name="end_time" id="end_time" value="{{ old('end_time') }}" required
-                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-orange-500 focus:ring-orange-500 @error('end_time') border-red-400 @enderror">
-                            @error('end_time') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                                class="input-field @error('end_time') border-red-400 @enderror">
+                            @error('end_time') <p class="form-error">{{ $message }}</p> @enderror
                         </div>
                     </div>
 
                     {{-- Location with Map Picker --}}
                     <div x-data="locationPicker()">
-                        <label for="location" class="block text-sm font-semibold text-gray-700 mb-1.5">Location</label>
+                        <label for="location" class="form-label">Location</label>
                         <div class="relative">
                             <input type="text" name="location" id="location" x-model="searchQuery" x-on:input.debounce.500ms="searchLocation()"
                                 placeholder="Search for a place or drag the pin on the map..."
-                                class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-orange-500 focus:ring-orange-500 @error('location') border-red-400 @enderror">
-                            @error('location') <p class="mt-1.5 text-xs text-red-600">{{ $message }}</p> @enderror
+                                class="input-field @error('location') border-red-400 @enderror">
+                            @error('location') <p class="form-error">{{ $message }}</p> @enderror
                         </div>
 
                         {{-- Search results dropdown --}}
                         <div x-show="results.length > 0" x-cloak
-                            class="mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                            class="mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
                             <template x-for="(result, index) in results" :key="index">
                                 <button type="button" x-on:click="selectResult(result)"
-                                    class="w-full text-left px-4 py-2.5 text-sm hover:bg-orange-50 border-b border-gray-100 last:border-b-0 transition-colors">
+                                    class="w-full text-left px-4 py-2.5 text-sm hover:bg-hoop-50 border-b border-gray-100 last:border-b-0 transition-colors">
                                     <span class="font-medium text-gray-800" x-text="result.display_name"></span>
                                 </button>
                             </template>
                         </div>
 
-                        {{-- Map -- always visible so users can drag the pin --}}
+                        {{-- Map --}}
                         <div class="mt-3">
-                            <div id="map-picker" class="w-full h-72 rounded-lg border border-gray-200"></div>
+                            <div id="map-picker" class="w-full h-72 rounded-xl border border-gray-200"></div>
                             <p class="mt-1.5 text-xs text-gray-400">Drag the pin to set the location, or search above.</p>
                         </div>
 
                         {{-- Selected location info --}}
-                        <div x-show="selectedAddress" x-cloak class="mt-2 flex items-center gap-2 text-sm text-gray-600">
+                        <div x-show="selectedAddress" x-cloak class="mt-2 flex items-center gap-2 text-sm text-gray-600 bg-hoop-50 rounded-xl px-4 py-3">
                             <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                             <span x-text="selectedAddress" class="flex-1"></span>
                             <button type="button" x-on:click="clearLocation()" class="text-red-500 hover:text-red-700 font-medium text-xs">Remove</button>
@@ -84,7 +87,8 @@
 
                     <div class="flex items-center justify-between pt-2">
                         <a href="{{ route('events.index') }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">Cancel</a>
-                        <button type="submit" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors">
+                        <button type="submit" class="btn-primary">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                             Create Event
                         </button>
                     </div>
@@ -111,7 +115,6 @@
                 init() {
                     this.$nextTick(() => this.initMap());
 
-                    // If there are existing values (from validation errors), set them
                     if (this.selectedLat && this.selectedLng) {
                         this.selectedAddress = this.searchQuery;
                     }
@@ -137,7 +140,6 @@
                     this.selectedLat = result.lat;
                     this.selectedLng = result.lon;
                     this.results = [];
-
                     this.updateMarker();
                 },
 
@@ -146,7 +148,6 @@
                     if (!mapDiv || this.mapInitialized) return;
                     this.mapInitialized = true;
 
-                    // Default to Ireland / Dublin area if no location set
                     const defaultLat = 53.3498;
                     const defaultLng = -6.2603;
                     const lat = this.selectedLat ? parseFloat(this.selectedLat) : defaultLat;
@@ -164,7 +165,6 @@
 
                     this.marker = L.marker([lat, lng], { draggable: true }).addTo(this.map);
 
-                    // If no location was pre-set, set the default coords
                     if (!this.selectedLat || !this.selectedLng) {
                         this.selectedLat = lat.toFixed(7);
                         this.selectedLng = lng.toFixed(7);
@@ -178,7 +178,6 @@
                         this.reverseGeocode(pos.lat, pos.lng);
                     });
 
-                    // Also allow clicking on the map to move the pin
                     this.map.on('click', (e) => {
                         this.marker.setLatLng(e.latlng);
                         this.selectedLat = e.latlng.lat.toFixed(7);
@@ -186,7 +185,6 @@
                         this.reverseGeocode(e.latlng.lat, e.latlng.lng);
                     });
 
-                    // Fix map rendering after Alpine finishes
                     setTimeout(() => this.map.invalidateSize(), 100);
                 },
 
@@ -223,7 +221,6 @@
                     this.selectedAddress = '';
                     this.results = [];
 
-                    // Reset marker to default position
                     if (this.map && this.marker) {
                         const defaultLat = 53.3498;
                         const defaultLng = -6.2603;

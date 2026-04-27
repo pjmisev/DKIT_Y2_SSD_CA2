@@ -5,31 +5,27 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Hoops Manager') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600,700,800&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="relative min-h-screen bg-gray-100 overflow-hidden">
-            <div class="absolute inset-0 bg-center bg-cover opacity-35" style="background-image: url('{{ asset('images/login-bg.jpg') }}');"></div>
-            <div class="absolute inset-0 bg-gradient-to-b from-gray-100/45 via-gray-100/60 to-gray-100/75"></div>
+        <div class="min-h-screen bg-gray-50 court-pattern">
+            @include('layouts.navigation')
 
-            <div class="relative z-10">
-                @include('layouts.navigation')
-
-                <!-- Page Heading -->
-                @isset($header)
-                    <header class="bg-white shadow">
-                        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                            {{ $header }}
-                        </div>
-                    </header>
-                @endisset
+            <!-- Page Heading -->
+            @isset($header)
+                <header class="bg-white/80 backdrop-blur-md border-b border-gray-100/50 shadow-sm">
+                    <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
+                        {{ $header }}
+                    </div>
+                </header>
+            @endisset
 
                 <!-- Page Content -->
                 <main>
