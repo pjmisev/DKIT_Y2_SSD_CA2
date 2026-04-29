@@ -6,8 +6,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Player Profile</h2>
-                    <p class="text-sm text-gray-500">Detailed player information</p>
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Player Profile</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Detailed player information</p>
                 </div>
             </div>
             @auth
@@ -43,9 +43,9 @@
             @endif
 
             <!-- Header Card -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft overflow-hidden">
                 <div class="md:flex">
-                    <div class="md:w-80 h-72 bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center relative overflow-hidden">
+                    <div class="md:w-80 min-h-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 25% 25%, white 0%, transparent 50%), radial-gradient(circle at 75% 75%, white 0%, transparent 50%);"></div>
                         @if ($profile->image)
                             <img src="{{ Storage::url($profile->image) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
@@ -55,14 +55,14 @@
                             </div>
                         @endif
                         @if ($info->jersey_number)
-                            <span class="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm text-gray-800 font-bold text-xl px-3 py-1.5 rounded-xl shadow-sm">#{{ $info->jersey_number }}</span>
+                            <span class="absolute bottom-4 left-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm text-gray-800 dark:text-gray-200 font-bold text-xl px-3 py-1.5 rounded-xl shadow-sm">#{{ $info->jersey_number }}</span>
                         @endif
                     </div>
                     <div class="flex-1 p-8">
                         <div class="flex items-start justify-between mb-6">
                             <div>
-                                <h1 class="text-2xl font-bold text-gray-900">{{ $user->name }}</h1>
-                                <p class="text-gray-500 mt-1">{{ $info->position ?? 'No position set' }}</p>
+                                <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $user->name }}</h1>
+                                <p class="text-gray-500 dark:text-gray-400 mt-1">{{ $info->position ?? 'No position set' }}</p>
                             </div>
                             <span class="badge
                                 {{ $info->health_status === 'fit' ? 'badge-green' : ($info->health_status === 'injured' ? 'badge-red' : ($info->health_status === 'recovering' ? 'badge-yellow' : 'badge-gray')) }}">
@@ -72,27 +72,27 @@
 
                         <div class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
                             <div>
-                                <span class="text-gray-400 text-xs">Email</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $user->email }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Email</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $user->email }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Team</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $profile->team ?? '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Team</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $profile->team ?? '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Nationality</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $profile->nationality ?? '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Nationality</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $profile->nationality ?? '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Salary</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $user->salary ? '€'.number_format($user->salary) : '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Salary</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $user->salary ? '€'.number_format($user->salary) : '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Date of Birth</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $profile->date_of_birth?->format('M d, Y') ?? '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Date of Birth</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $profile->date_of_birth?->format('M d, Y') ?? '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Status</span>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Status</span>
                                 <p class="mt-0.5">
                                     <span class="badge {{ $user->status ? 'badge-green' : 'badge-gray' }}">
                                         {{ $user->status ? 'Active' : 'Inactive' }}
@@ -105,33 +105,33 @@
             </div>
 
             <!-- Physical Stats -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft p-8">
                 <h3 class="section-header">Physical Stats</h3>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 rounded-xl">
-                        <div class="text-2xl font-bold text-indigo-600">{{ $info->height_cm ?? '—' }}</div>
-                        <div class="text-xs text-gray-500 mt-1">Height (cm)</div>
+                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 dark:from-indigo-900/30 dark:to-indigo-800/20 rounded-xl">
+                        <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ $info->height_cm ?? '—' }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Height (cm)</div>
                     </div>
-                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 rounded-xl">
-                        <div class="text-2xl font-bold text-indigo-600">{{ $info->weight_kg ?? '—' }}</div>
-                        <div class="text-xs text-gray-500 mt-1">Weight (kg)</div>
+                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 dark:from-indigo-900/30 dark:to-indigo-800/20 rounded-xl">
+                        <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ $info->weight_kg ?? '—' }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Weight (kg)</div>
                     </div>
-                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 rounded-xl">
-                        <div class="text-2xl font-bold text-indigo-600">{{ ucfirst($info->dominant_hand ?? '—') }}</div>
-                        <div class="text-xs text-gray-500 mt-1">Dominant Hand</div>
+                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 dark:from-indigo-900/30 dark:to-indigo-800/20 rounded-xl">
+                        <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ ucfirst($info->dominant_hand ?? '—') }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Dominant Hand</div>
                     </div>
-                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 rounded-xl">
-                        <div class="text-2xl font-bold text-indigo-600">{{ $info->position ?? '—' }}</div>
-                        <div class="text-xs text-gray-500 mt-1">Position</div>
+                    <div class="text-center p-5 bg-gradient-to-br from-indigo-50 to-indigo-100/50 dark:from-indigo-900/30 dark:to-indigo-800/20 rounded-xl">
+                        <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">{{ $info->position ?? '—' }}</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mt-1">Position</div>
                     </div>
                 </div>
             </div>
 
             <!-- Notes -->
             @if ($profile->notes)
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
+                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft p-8">
                     <h3 class="section-header">Notes</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">{{ $profile->notes }}</p>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $profile->notes }}</p>
                 </div>
             @endif
 

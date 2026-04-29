@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Events</h2>
+            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Events</h2>
             @if (Auth::user()->isAdmin())
                 <a href="{{ route('events.create') }}" class="inline-flex items-center gap-2 bg-orange-500 hover:bg-orange-600 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
@@ -15,30 +15,30 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             @if (session('status'))
-                <div class="mb-6 flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 text-sm rounded-xl px-4 py-3">
+                <div class="mb-6 flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 text-sm rounded-xl px-4 py-3 dark:bg-green-900/30 dark:border-green-800 dark:text-green-200">
                     <svg class="w-4 h-4 shrink-0 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
                     Event {{ session('status') === 'event-created' ? 'created' : (session('status') === 'event-updated' ? 'updated' : 'deleted') }} successfully.
                 </div>
             @endif
 
             {{-- Search & filters --}}
-            <form method="GET" action="{{ route('events.index') }}" class="mb-6 bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+            <form method="GET" action="{{ route('events.index') }}" class="mb-6 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-4">
                 <div class="flex flex-wrap gap-3">
                     <div class="flex-1 min-w-48">
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Search name or location…"
-                            class="block w-full rounded-lg border-gray-300 shadow-sm text-sm focus:border-orange-400 focus:ring-orange-400">
+                            class="block w-full rounded-lg border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-200 shadow-sm text-sm focus:border-orange-400 focus:ring-orange-400">
                     </div>
-                    <div class="flex rounded-lg overflow-hidden border border-gray-300 text-sm font-medium">
+                    <div class="flex rounded-lg overflow-hidden border border-gray-300 dark:border-gray-600 text-sm font-medium">
                         <a href="{{ request()->fullUrlWithQuery(['period' => '']) }}"
-                           class="px-4 py-2 transition-colors {{ !request('period') ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                           class="px-4 py-2 transition-colors {{ !request('period') ? 'bg-orange-500 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                             All
                         </a>
                         <a href="{{ request()->fullUrlWithQuery(['period' => 'upcoming']) }}"
-                           class="px-4 py-2 border-l border-gray-300 transition-colors {{ request('period') === 'upcoming' ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                           class="px-4 py-2 border-l border-gray-300 dark:border-gray-600 transition-colors {{ request('period') === 'upcoming' ? 'bg-orange-500 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                             Upcoming
                         </a>
                         <a href="{{ request()->fullUrlWithQuery(['period' => 'past']) }}"
-                           class="px-4 py-2 border-l border-gray-300 transition-colors {{ request('period') === 'past' ? 'bg-orange-500 text-white' : 'bg-white text-gray-600 hover:bg-gray-50' }}">
+                           class="px-4 py-2 border-l border-gray-300 dark:border-gray-600 transition-colors {{ request('period') === 'past' ? 'bg-orange-500 text-white' : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700' }}">
                             Past
                         </a>
                     </div>
@@ -47,7 +47,7 @@
                         Search
                     </button>
                     @if (request()->hasAny(['search', 'period']))
-                        <a href="{{ route('events.index') }}" class="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 font-medium px-3 py-2 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                        <a href="{{ route('events.index') }}" class="inline-flex items-center gap-1.5 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 font-medium px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                             Clear
                         </a>
                     @endif
@@ -55,15 +55,15 @@
             </form>
 
             @if ($events->isEmpty())
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-16 text-center">
-                    <svg class="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm p-16 text-center">
+                    <svg class="w-12 h-12 text-gray-300 dark:text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                     @if (request()->hasAny(['search', 'period']))
-                        <p class="text-gray-500 font-medium">No events match your search.</p>
+                        <p class="text-gray-500 dark:text-gray-400 font-medium">No events match your search.</p>
                         <a href="{{ route('events.index') }}" class="mt-4 inline-block text-orange-500 hover:text-orange-600 text-sm font-semibold">Clear filters &rarr;</a>
                     @else
-                        <p class="text-gray-500 font-medium">No events scheduled.</p>
+                        <p class="text-gray-500 dark:text-gray-400 font-medium">No events scheduled.</p>
                         @if (Auth::user()->isAdmin())
                             <a href="{{ route('events.create') }}" class="mt-4 inline-block text-orange-500 hover:text-orange-600 text-sm font-semibold">Schedule the first event &rarr;</a>
                         @endif
@@ -73,22 +73,22 @@
                 <div class="space-y-4">
                     @foreach ($events as $event)
                         @php $isPast = $event->end_time->isPast(); @endphp
-                        <a href="{{ route('events.show', $event) }}" class="flex items-start gap-5 bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-5 hover:border-orange-200 hover:shadow-md transition-all duration-150 {{ $isPast ? 'opacity-60' : '' }}">
-                            <div class="text-center w-14 shrink-0 bg-orange-50 rounded-xl py-2">
-                                <div class="text-xs font-bold text-orange-500 uppercase">{{ $event->start_time->format('M') }}</div>
-                                <div class="text-3xl font-black text-gray-800 leading-none">{{ $event->start_time->format('d') }}</div>
-                                <div class="text-xs text-gray-400">{{ $event->start_time->format('Y') }}</div>
+                        <a href="{{ route('events.show', $event) }}" class="flex items-start gap-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm px-6 py-5 hover:border-orange-200 dark:hover:border-orange-700 hover:shadow-md dark:hover:shadow-gray-900/50 transition-all duration-150 {{ $isPast ? 'opacity-60' : '' }}">
+                            <div class="text-center w-14 shrink-0 bg-orange-50 dark:bg-orange-900/30 rounded-xl py-2">
+                                <div class="text-xs font-bold text-orange-500 dark:text-orange-400 uppercase">{{ $event->start_time->format('M') }}</div>
+                                <div class="text-3xl font-black text-gray-800 dark:text-gray-200 leading-none">{{ $event->start_time->format('d') }}</div>
+                                <div class="text-xs text-gray-400 dark:text-gray-500">{{ $event->start_time->format('Y') }}</div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-2 flex-wrap">
-                                    <span class="text-base font-semibold text-gray-900">{{ $event->name }}</span>
+                                    <span class="text-base font-semibold text-gray-900 dark:text-gray-100">{{ $event->name }}</span>
                                     @if ($isPast)
-                                        <span class="text-xs bg-gray-100 text-gray-500 font-medium px-2 py-0.5 rounded-full">Past</span>
+                                        <span class="text-xs bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium px-2 py-0.5 rounded-full">Past</span>
                                     @else
-                                        <span class="text-xs bg-orange-100 text-orange-600 font-medium px-2 py-0.5 rounded-full">Upcoming</span>
+                                        <span class="text-xs bg-orange-100 dark:bg-orange-900/50 text-orange-600 dark:text-orange-400 font-medium px-2 py-0.5 rounded-full">Upcoming</span>
                                     @endif
                                 </div>
-                                <div class="mt-1 text-sm text-gray-400 flex items-center gap-3 flex-wrap">
+                                <div class="mt-1 text-sm text-gray-400 dark:text-gray-500 flex items-center gap-3 flex-wrap">
                                     <span>{{ $event->start_time->format('g:i A') }} – {{ $event->end_time->format('g:i A') }}</span>
                                     @if ($event->location)
                                         <span class="flex items-center gap-1">
@@ -98,7 +98,7 @@
                                     @endif
                                 </div>
                                 @if ($event->description)
-                                    <p class="mt-1.5 text-sm text-gray-500 line-clamp-1">{{ $event->description }}</p>
+                                    <p class="mt-1.5 text-sm text-gray-500 dark:text-gray-400 line-clamp-1">{{ $event->description }}</p>
                                 @endif
                             </div>
                         </a>

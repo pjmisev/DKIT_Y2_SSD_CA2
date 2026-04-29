@@ -6,8 +6,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Management Profile</h2>
-                    <p class="text-sm text-gray-500">Detailed management information</p>
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Management Profile</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Detailed management information</p>
                 </div>
             </div>
             @auth
@@ -43,9 +43,9 @@
             @endif
 
             <!-- Header Card -->
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft overflow-hidden">
                 <div class="md:flex">
-                    <div class="md:w-80 h-72 bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center relative overflow-hidden">
+                    <div class="md:w-80 min-h-full bg-gradient-to-br from-sky-500 to-sky-700 flex items-center justify-center relative overflow-hidden">
                         <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 25% 25%, white 0%, transparent 50%), radial-gradient(circle at 75% 75%, white 0%, transparent 50%);"></div>
                         @if ($profile->image)
                             <img src="{{ Storage::url($profile->image) }}" alt="{{ $user->name }}" class="w-full h-full object-cover">
@@ -58,8 +58,8 @@
                     <div class="flex-1 p-8">
                         <div class="flex items-start justify-between mb-6">
                             <div>
-                                <h1 class="text-2xl font-bold text-gray-900">{{ $user->name }}</h1>
-                                <p class="text-gray-500 mt-1">{{ $info->role ?? 'No role set' }}</p>
+                                <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $user->name }}</h1>
+                                <p class="text-gray-500 dark:text-gray-400 mt-1">{{ $info->role ?? 'No role set' }}</p>
                             </div>
                             <span class="badge {{ $user->status ? 'badge-green' : 'badge-gray' }}">
                                 {{ $user->status ? 'Active' : 'Inactive' }}
@@ -68,28 +68,28 @@
 
                         <div class="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
                             <div>
-                                <span class="text-gray-400 text-xs">Email</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $user->email }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Email</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $user->email }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Team</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $profile->team ?? '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Team</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $profile->team ?? '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Nationality</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $profile->nationality ?? '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Nationality</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $profile->nationality ?? '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Salary</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $user->salary ? '€'.number_format($user->salary) : '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Salary</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $user->salary ? '€'.number_format($user->salary) : '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Date of Birth</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $profile->date_of_birth?->format('M d, Y') ?? '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Date of Birth</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $profile->date_of_birth?->format('M d, Y') ?? '—' }}</p>
                             </div>
                             <div>
-                                <span class="text-gray-400 text-xs">Department</span>
-                                <p class="font-medium text-gray-800 mt-0.5">{{ $info->department ?? '—' }}</p>
+                                <span class="text-gray-400 dark:text-gray-500 text-xs">Department</span>
+                                <p class="font-medium text-gray-800 dark:text-gray-200 mt-0.5">{{ $info->department ?? '—' }}</p>
                             </div>
                         </div>
                     </div>
@@ -98,9 +98,9 @@
 
             <!-- Notes -->
             @if ($profile->notes)
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
+                <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft p-8">
                     <h3 class="section-header">Notes</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed">{{ $profile->notes }}</p>
+                    <p class="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{{ $profile->notes }}</p>
                 </div>
             @endif
 

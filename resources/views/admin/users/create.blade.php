@@ -5,15 +5,15 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Create User</h2>
-                <p class="text-sm text-gray-500">Add a new user to the system</p>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Create User</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Add a new user to the system</p>
             </div>
         </div>
     </x-slot>
 
     <div class="py-10">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft p-8">
                 <form method="POST" action="{{ route('admin.users.store') }}" class="space-y-6">
                     @csrf
 
@@ -68,13 +68,13 @@
                     <div>
                         <label class="flex items-center gap-3 cursor-pointer select-none">
                             <input type="checkbox" name="status" value="1" checked
-                                class="w-4 h-4 rounded border-gray-300 text-hoop-600 focus:ring-hoop-500">
-                            <span class="text-sm font-semibold text-gray-700">Active account</span>
+                                class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-hoop-600 focus:ring-hoop-500">
+                            <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Active account</span>
                         </label>
                     </div>
 
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <a href="{{ route('admin.users.index') }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">Cancel</a>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <a href="{{ route('admin.users.index') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium transition-colors">Cancel</a>
                         <button type="submit" class="btn-primary">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                             Create User

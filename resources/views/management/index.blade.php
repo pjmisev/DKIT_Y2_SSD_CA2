@@ -6,8 +6,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Management</h2>
-                    <p class="text-sm text-gray-500">Manage your management team</p>
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Management</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Manage your management team</p>
                 </div>
             </div>
             @auth
@@ -59,12 +59,12 @@
             <div class="card-grid">
                 @forelse ($profiles as $profile)
                     @php $user = $profile->user; $info = $profile->profileable; @endphp
-                    <a href="{{ route('management.show', $profile) }}" class="group bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-                        <div class="aspect-[3/2] bg-gradient-to-br from-sky-50 to-sky-100 flex items-center justify-center relative overflow-hidden">
+                    <a href="{{ route('management.show', $profile) }}" class="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                        <div class="aspect-[3/2] bg-gradient-to-br from-sky-50 to-sky-100 dark:from-sky-900/30 dark:to-sky-800/20 flex items-center justify-center relative overflow-hidden">
                             @if ($profile->image)
                                 <img src="{{ Storage::url($profile->image) }}" alt="{{ $user->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
-                                <div class="w-16 h-16 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-sky-600 font-bold text-xl shadow-sm">
+                                <div class="w-16 h-16 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center text-sky-600 dark:text-sky-400 font-bold text-xl shadow-sm">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                             @endif
@@ -73,13 +73,13 @@
                             @endif
                         </div>
                         <div class="p-5">
-                            <h3 class="font-semibold text-gray-900 group-hover:text-sky-600 transition-colors truncate">{{ $user->name }}</h3>
+                            <h3 class="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-sky-600 dark:group-hover:text-sky-400 transition-colors truncate">{{ $user->name }}</h3>
                             <div class="flex items-center gap-2 mt-1.5">
                                 @if ($info->department)
-                                    <span class="text-xs text-gray-500">{{ $info->department }}</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ $info->department }}</span>
                                 @endif
                                 @if ($profile->team)
-                                    <span class="text-xs text-gray-400">&middot; {{ $profile->team }}</span>
+                                    <span class="text-xs text-gray-400 dark:text-gray-500">&middot; {{ $profile->team }}</span>
                                 @endif
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                         <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6a4 4 0 11-8 0 4 4 0 018 0zM12 11v1m0 4h.01"/></svg>
                         <p class="empty-state-text">No management members found.</p>
                         @if (Auth::user()->isAdmin())
-                            <a href="{{ route('management.create') }}" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-sky-600 hover:text-sky-700">Add your first member &rarr;</a>
+                            <a href="{{ route('management.create') }}" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300">Add your first member &rarr;</a>
                         @endif
                     </div>
                 @endforelse

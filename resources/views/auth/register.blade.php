@@ -1,7 +1,7 @@
 <x-guest-layout>
     <div class="mb-6 text-center">
-        <h2 class="text-xl font-bold text-white">Create Account</h2>
-        <p class="text-sm text-gray-400 mt-1">Join your basketball club</p>
+        <h2 class="text-xl font-bold text-gray-900 dark:text-white">Create Account</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Join your basketball club</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-5">
@@ -9,45 +9,45 @@
 
         <!-- Name -->
         <div>
-            <label for="name" class="input-label text-gray-300">Name</label>
+            <label for="name" class="input-label text-gray-700 dark:text-gray-300">Name</label>
             <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus autocomplete="name"
-                class="input-field bg-white/5 border-gray-700/50 text-white placeholder:text-gray-500 focus:bg-white/10 @error('name') input-error @enderror"
+                class="input-field @error('name') input-error @enderror"
                 placeholder="Your full name">
             @error('name')
-                <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
+                <p class="mt-1.5 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
             @enderror
         </div>
 
         <!-- Email -->
         <div>
-            <label for="email" class="input-label text-gray-300">Email</label>
+            <label for="email" class="input-label text-gray-700 dark:text-gray-300">Email</label>
             <input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="username"
-                class="input-field bg-white/5 border-gray-700/50 text-white placeholder:text-gray-500 focus:bg-white/10 @error('email') input-error @enderror"
+                class="input-field @error('email') input-error @enderror"
                 placeholder="you@example.com">
             @error('email')
-                <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
+                <p class="mt-1.5 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
             @enderror
         </div>
 
         <!-- Password -->
         <div>
-            <label for="password" class="input-label text-gray-300">Password</label>
+            <label for="password" class="input-label text-gray-700 dark:text-gray-300">Password</label>
             <input id="password" type="password" name="password" required autocomplete="new-password"
-                class="input-field bg-white/5 border-gray-700/50 text-white placeholder:text-gray-500 focus:bg-white/10 @error('password') input-error @enderror"
+                class="input-field @error('password') input-error @enderror"
                 placeholder="••••••••">
             @error('password')
-                <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
+                <p class="mt-1.5 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
             @enderror
         </div>
 
         <!-- Confirm Password -->
         <div>
-            <label for="password_confirmation" class="input-label text-gray-300">Confirm Password</label>
+            <label for="password_confirmation" class="input-label text-gray-700 dark:text-gray-300">Confirm Password</label>
             <input id="password_confirmation" type="password" name="password_confirmation" required autocomplete="new-password"
-                class="input-field bg-white/5 border-gray-700/50 text-white placeholder:text-gray-500 focus:bg-white/10 @error('password_confirmation') input-error @enderror"
+                class="input-field @error('password_confirmation') input-error @enderror"
                 placeholder="••••••••">
             @error('password_confirmation')
-                <p class="mt-1.5 text-xs text-red-400">{{ $message }}</p>
+                <p class="mt-1.5 text-xs text-red-500 dark:text-red-400">{{ $message }}</p>
             @enderror
         </div>
 
@@ -60,12 +60,12 @@
 
     <!-- Social Register -->
     @if (config('services.google.client_id') || config('services.github.client_id'))
-        <div class="divider text-gray-500 mt-6 mb-5">or sign up with</div>
+        <div class="divider text-gray-500 dark:text-gray-400 mt-6 mb-5">or sign up with</div>
 
         <div>
             @if (config('services.google.client_id'))
                 <a href="{{ route('auth.provider.redirect', 'google') }}"
-                    class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gray-700/50 bg-white/5 text-sm font-medium text-gray-300 hover:bg-white/10 hover:text-white transition-all duration-200">
+                    class="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700/50 bg-white dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-all duration-200">
                     <svg class="w-5 h-5" viewBox="0 0 24 24"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z"/><path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
                     Google
                 </a>
@@ -73,8 +73,8 @@
         </div>
     @endif
 
-    <p class="mt-6 text-center text-sm text-gray-500">
+    <p class="mt-6 text-center text-sm text-gray-500 dark:text-gray-400">
         Already have an account?
-        <a href="{{ route('login') }}" class="text-hoop-400 hover:text-hoop-300 font-semibold transition-colors">Sign in</a>
+        <a href="{{ route('login') }}" class="text-hoop-600 dark:text-hoop-400 hover:text-hoop-700 dark:hover:text-hoop-300 font-semibold transition-colors">Sign in</a>
     </p>
 </x-guest-layout>

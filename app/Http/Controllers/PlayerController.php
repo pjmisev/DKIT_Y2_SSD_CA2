@@ -153,7 +153,7 @@ class PlayerController extends Controller
         abort_if($profile->profileable_type !== PlayerInfo::class, 404);
 
         return view('players.edit', [
-            'profile'        => $profile,
+            'player'         => $profile,
             'positions'      => PlayerInfo::POSITIONS,
             'healthStatuses' => PlayerInfo::HEALTH_STATUSES,
         ]);

@@ -6,8 +6,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">{{ $event->name }}</h2>
-                    <p class="text-sm text-gray-500">Event details</p>
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">{{ $event->name }}</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Event details</p>
                 </div>
             </div>
             @if (Auth::user()->isAdmin())
@@ -30,7 +30,7 @@
 
     <div class="py-10">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft overflow-hidden">
                 <!-- Date banner -->
                 <div class="bg-gradient-to-r from-hoop-500 to-hoop-600 px-8 py-8 text-white">
                     <div class="flex items-center gap-6">
@@ -59,25 +59,25 @@
                     @if ($event->description)
                         <div class="mb-6">
                             <h3 class="section-header text-sm">Description</h3>
-                            <p class="text-gray-600 leading-relaxed text-sm">{{ $event->description }}</p>
+                            <p class="text-gray-600 dark:text-gray-400 leading-relaxed text-sm">{{ $event->description }}</p>
                         </div>
                     @endif
 
                     <div class="grid grid-cols-2 gap-6 text-sm">
-                        <div class="p-4 bg-gray-50 rounded-xl">
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Start</span>
-                            <p class="mt-1 font-semibold text-gray-800">{{ $event->start_time->format('M d, Y \a\t g:i A') }}</p>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <span class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Start</span>
+                            <p class="mt-1 font-semibold text-gray-800 dark:text-gray-200">{{ $event->start_time->format('M d, Y \a\t g:i A') }}</p>
                         </div>
-                        <div class="p-4 bg-gray-50 rounded-xl">
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">End</span>
-                            <p class="mt-1 font-semibold text-gray-800">{{ $event->end_time->format('M d, Y \a\t g:i A') }}</p>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <span class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">End</span>
+                            <p class="mt-1 font-semibold text-gray-800 dark:text-gray-200">{{ $event->end_time->format('M d, Y \a\t g:i A') }}</p>
                         </div>
-                        <div class="p-4 bg-gray-50 rounded-xl">
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Created By</span>
-                            <p class="mt-1 font-semibold text-gray-800">{{ $event->creator?->name ?? '—' }}</p>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <span class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Created By</span>
+                            <p class="mt-1 font-semibold text-gray-800 dark:text-gray-200">{{ $event->creator?->name ?? '—' }}</p>
                         </div>
-                        <div class="p-4 bg-gray-50 rounded-xl">
-                            <span class="text-xs font-semibold text-gray-400 uppercase tracking-wider">Status</span>
+                        <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                            <span class="text-xs font-semibold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Status</span>
                             <p class="mt-1">
                                 @if ($event->end_time->isPast())
                                     <span class="badge badge-gray">Past</span>
@@ -92,10 +92,10 @@
                     @if ($event->latitude && $event->longitude)
                         <div class="mt-8">
                             <h3 class="section-header text-sm">Location</h3>
-                            <div id="event-map" class="w-full h-72 rounded-xl border border-gray-200"></div>
+                            <div id="event-map" class="w-full h-72 rounded-xl border border-gray-200 dark:border-gray-700"></div>
                             <div class="mt-3 flex items-center justify-between">
-                                <p class="text-sm text-gray-500">{{ $event->location }}</p>
-                                <a href="{{ $event->map_url }}" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-hoop-600 hover:text-hoop-700 transition-colors">
+                                <p class="text-sm text-gray-500 dark:text-gray-400">{{ $event->location }}</p>
+                                <a href="{{ $event->map_url }}" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-hoop-600 dark:text-hoop-400 hover:text-hoop-700 dark:hover:text-hoop-300 transition-colors">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                                     Open in Google Maps
                                 </a>
@@ -104,12 +104,12 @@
                     @elseif ($event->location)
                         <div class="mt-8">
                             <h3 class="section-header text-sm">Location</h3>
-                            <div class="flex items-center justify-between bg-gray-50 rounded-xl px-5 py-4">
+                            <div class="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-xl px-5 py-4">
                                 <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-                                    <span class="text-sm text-gray-700 font-medium">{{ $event->location }}</span>
+                                    <svg class="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                                    <span class="text-sm text-gray-700 dark:text-gray-300 font-medium">{{ $event->location }}</span>
                                 </div>
-                                <a href="{{ $event->map_url }}" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-hoop-600 hover:text-hoop-700 transition-colors">
+                                <a href="{{ $event->map_url }}" target="_blank" class="inline-flex items-center gap-1.5 text-sm font-semibold text-hoop-600 dark:text-hoop-400 hover:text-hoop-700 dark:hover:text-hoop-300 transition-colors">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                                     Open in Google Maps
                                 </a>

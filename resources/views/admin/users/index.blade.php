@@ -6,8 +6,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Users</h2>
-                    <p class="text-sm text-gray-500">Manage all system users</p>
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Users</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Manage all system users</p>
                 </div>
             </div>
             <a href="{{ route('admin.users.create') }}" class="btn-primary">
@@ -27,56 +27,56 @@
                 </div>
             @endif
 
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft overflow-hidden">
                 <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-100">
-                        <thead class="bg-gray-50/50">
+                    <table class="min-w-full divide-y divide-gray-100 dark:divide-gray-800">
+                        <thead class="bg-gray-50/50 dark:bg-gray-800/50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Team</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Role</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Position</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Salary</th>
-                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Email</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Team</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Role</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Position</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Salary</th>
+                                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
                                 <th class="px-6 py-3"></th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-50">
+                        <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                             @forelse ($users as $user)
-                                <tr class="hover:bg-gray-50 transition-colors">
+                                <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                                     <td class="px-6 py-4">
                                         <div class="flex items-center gap-3">
                                             <div class="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-violet-600 flex items-center justify-center text-white text-xs font-bold shrink-0">
                                                 {{ strtoupper(substr($user->name, 0, 1)) }}
                                             </div>
-                                            <span class="text-sm font-semibold text-gray-900">{{ $user->name }}</span>
+                                            <span class="text-sm font-semibold text-gray-900 dark:text-gray-100">{{ $user->name }}</span>
                                             @if ($user->id === auth()->id())
                                                 <span class="badge badge-violet text-xs">You</span>
                                             @endif
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $user->email }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ $user->email }}</td>
                                     <td class="px-6 py-4">
                                         @if ($user->team)
                                             <div class="flex items-center gap-2">
                                                 <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: {{ $user->team->theme_color }}"></span>
-                                                <span class="text-sm text-gray-600">{{ $user->team->name }}</span>
+                                                <span class="text-sm text-gray-600 dark:text-gray-400">{{ $user->team->name }}</span>
                                             </div>
                                         @else
-                                            <span class="text-sm text-gray-400">—</span>
+                                            <span class="text-sm text-gray-400 dark:text-gray-500">—</span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
                                         <span class="badge {{ $user->role === 'admin' ? 'badge-violet' : 'badge-gray' }}">{{ $user->role }}</span>
                                     </td>
-                                    <td class="px-6 py-4 text-sm text-gray-500">{{ $user->position ?? '—' }}</td>
-                                    <td class="px-6 py-4 text-sm text-gray-500">€{{ number_format($user->salary) }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">{{ $user->position ?? '—' }}</td>
+                                    <td class="px-6 py-4 text-sm text-gray-500 dark:text-gray-400">€{{ number_format($user->salary) }}</td>
                                     <td class="px-6 py-4">
                                         <span class="badge {{ $user->status ? 'badge-green' : 'badge-gray' }}">{{ $user->status ? 'Active' : 'Inactive' }}</span>
                                     </td>
                                     <td class="px-6 py-4 text-right whitespace-nowrap">
-                                        <a href="{{ route('admin.users.edit', $user) }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors mr-4">Edit</a>
+                                        <a href="{{ route('admin.users.edit', $user) }}" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors mr-4">Edit</a>
                                         @if ($user->id !== auth()->id())
                                             <form method="POST" action="{{ route('admin.users.destroy', $user) }}" class="inline">
                                                 @csrf @method('DELETE')
@@ -87,7 +87,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="px-6 py-12 text-center text-sm text-gray-400">No users found.</td>
+                                    <td colspan="8" class="px-6 py-12 text-center text-sm text-gray-400 dark:text-gray-500">No users found.</td>
                                 </tr>
                             @endforelse
                         </tbody>

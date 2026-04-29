@@ -119,8 +119,8 @@ class ManagementController extends Controller
         abort_if($profile->profileable_type !== ManagementInfo::class, 404);
 
         return view('management.edit', [
-            'profile' => $profile,
-            'roles'   => ManagementInfo::ROLES,
+            'management' => $profile,
+            'roles'      => ManagementInfo::ROLES,
         ]);
     }
 

@@ -6,8 +6,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Teams</h2>
-                    <p class="text-sm text-gray-500">Manage basketball teams</p>
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Teams</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Manage basketball teams</p>
                 </div>
             </div>
             <a href="{{ route('admin.teams.create') }}" class="btn-primary">
@@ -37,7 +37,7 @@
 
             <div class="card-grid">
                 @forelse ($teams as $team)
-                    <div class="bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
                         <div class="h-2" style="background-color: {{ $team->theme_color }}"></div>
                         <div class="p-6">
                             <div class="flex items-center justify-between mb-4">
@@ -46,18 +46,18 @@
                                         {{ strtoupper(substr($team->name, 0, 2)) }}
                                     </div>
                                     <div>
-                                        <h3 class="font-semibold text-gray-900">{{ $team->name }}</h3>
-                                        <p class="text-xs text-gray-400">{{ $team->users_count }} member{{ $team->users_count !== 1 ? 's' : '' }}</p>
+                                        <h3 class="font-semibold text-gray-900 dark:text-gray-100">{{ $team->name }}</h3>
+                                        <p class="text-xs text-gray-400 dark:text-gray-500">{{ $team->users_count }} member{{ $team->users_count !== 1 ? 's' : '' }}</p>
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-1">
-                                    <span class="w-5 h-5 rounded-full border-2 border-gray-200" style="background-color: {{ $team->theme_color }}" title="{{ $team->theme_color }}"></span>
+                                    <span class="w-5 h-5 rounded-full border-2 border-gray-200 dark:border-gray-600" style="background-color: {{ $team->theme_color }}" title="{{ $team->theme_color }}"></span>
                                 </div>
                             </div>
-                            <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-                                <span class="text-xs text-gray-400 font-mono">{{ $team->theme_color }}</span>
+                            <div class="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+                                <span class="text-xs text-gray-400 dark:text-gray-500 font-mono">{{ $team->theme_color }}</span>
                                 <div class="flex items-center gap-3">
-                                    <a href="{{ route('admin.teams.edit', $team) }}" class="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Edit</a>
+                                    <a href="{{ route('admin.teams.edit', $team) }}" class="text-sm font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 transition-colors">Edit</a>
                                     <form method="POST" action="{{ route('admin.teams.destroy', $team) }}" class="inline">
                                         @csrf @method('DELETE')
                                         <button type="submit" onclick="return confirm('Delete {{ addslashes($team->name) }}?')" class="text-sm font-medium text-red-500 hover:text-red-700 transition-colors">Delete</button>
@@ -70,7 +70,7 @@
                     <div class="col-span-full empty-state">
                         <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                         <p class="empty-state-text">No teams created yet.</p>
-                        <a href="{{ route('admin.teams.create') }}" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-amber-600 hover:text-amber-700">Create your first team &rarr;</a>
+                        <a href="{{ route('admin.teams.create') }}" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300">Create your first team &rarr;</a>
                     </div>
                 @endforelse
             </div>

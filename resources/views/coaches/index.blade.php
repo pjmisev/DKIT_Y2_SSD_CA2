@@ -6,8 +6,8 @@
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </a>
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">Coaches</h2>
-                    <p class="text-sm text-gray-500">Manage your coaching staff</p>
+                    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Coaches</h2>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Manage your coaching staff</p>
                 </div>
             </div>
             @auth
@@ -59,12 +59,12 @@
             <div class="card-grid">
                 @forelse ($profiles as $profile)
                     @php $user = $profile->user; $info = $profile->profileable; @endphp
-                    <a href="{{ route('coaches.show', $profile) }}" class="group bg-white rounded-2xl border border-gray-100 shadow-soft overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
-                        <div class="aspect-[3/2] bg-gradient-to-br from-emerald-50 to-emerald-100 flex items-center justify-center relative overflow-hidden">
+                    <a href="{{ route('coaches.show', $profile) }}" class="group bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft overflow-hidden hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300">
+                        <div class="aspect-[3/2] bg-gradient-to-br from-emerald-50 to-emerald-100 dark:from-emerald-900/30 dark:to-emerald-800/20 flex items-center justify-center relative overflow-hidden">
                             @if ($profile->image)
                                 <img src="{{ Storage::url($profile->image) }}" alt="{{ $user->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                             @else
-                                <div class="w-16 h-16 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-emerald-600 font-bold text-xl shadow-sm">
+                                <div class="w-16 h-16 rounded-full bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold text-xl shadow-sm">
                                     {{ strtoupper(substr($user->name, 0, 1)) }}
                                 </div>
                             @endif
@@ -73,18 +73,18 @@
                             @endif
                         </div>
                         <div class="p-5">
-                            <h3 class="font-semibold text-gray-900 group-hover:text-emerald-600 transition-colors truncate">{{ $user->name }}</h3>
+                            <h3 class="font-semibold text-gray-900 dark:text-gray-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">{{ $user->name }}</h3>
                             <div class="flex items-center gap-2 mt-1.5">
                                 @if ($info->years_experience)
-                                    <span class="text-xs text-gray-500">{{ $info->years_experience }} years experience</span>
+                                    <span class="text-xs text-gray-500 dark:text-gray-400">{{ $info->years_experience }} years experience</span>
                                 @endif
                                 @if ($profile->team)
-                                    <span class="text-xs text-gray-400">&middot; {{ $profile->team }}</span>
+                                    <span class="text-xs text-gray-400 dark:text-gray-500">&middot; {{ $profile->team }}</span>
                                 @endif
                             </div>
                             @if ($info->certifications)
-                                <div class="mt-3 pt-3 border-t border-gray-50">
-                                    <p class="text-xs text-gray-400 line-clamp-1">{{ $info->certifications }}</p>
+                                <div class="mt-3 pt-3 border-t border-gray-50 dark:border-gray-800">
+                                    <p class="text-xs text-gray-400 dark:text-gray-500 line-clamp-1">{{ $info->certifications }}</p>
                                 </div>
                             @endif
                         </div>
@@ -94,7 +94,7 @@
                         <svg class="empty-state-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 12c2.21 0 4-1.79 4-4S14.21 4 12 4 8 5.79 8 8s1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                         <p class="empty-state-text">No coaches found.</p>
                         @if (Auth::user()->isAdmin())
-                            <a href="{{ route('coaches.create') }}" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-emerald-600 hover:text-emerald-700">Add your first coach &rarr;</a>
+                            <a href="{{ route('coaches.create') }}" class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300">Add your first coach &rarr;</a>
                         @endif
                     </div>
                 @endforelse

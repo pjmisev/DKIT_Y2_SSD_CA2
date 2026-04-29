@@ -119,8 +119,8 @@ class CoachController extends Controller
         abort_if($profile->profileable_type !== CoachInfo::class, 404);
 
         return view('coaches.edit', [
-            'profile' => $profile,
-            'roles'   => CoachInfo::ROLES,
+            'coach' => $profile,
+            'roles' => CoachInfo::ROLES,
         ]);
     }
 

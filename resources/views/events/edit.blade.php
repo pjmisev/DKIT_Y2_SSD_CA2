@@ -5,15 +5,15 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Event</h2>
-                <p class="text-sm text-gray-500">Update event details</p>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Edit Event</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Update event details</p>
             </div>
         </div>
     </x-slot>
 
     <div class="py-10">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft p-8">
                 <form method="POST" action="{{ route('events.update', $event) }}" class="space-y-6">
                     @csrf
                     @method('PATCH')
@@ -60,21 +60,21 @@
                         </div>
 
                         <div x-show="results.length > 0" x-cloak
-                            class="mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-48 overflow-y-auto">
+                            class="mt-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-xl shadow-lg max-h-48 overflow-y-auto">
                             <template x-for="(result, index) in results" :key="index">
                                 <button type="button" x-on:click="selectResult(result)"
-                                    class="w-full text-left px-4 py-2.5 text-sm hover:bg-hoop-50 border-b border-gray-100 last:border-b-0 transition-colors">
-                                    <span class="font-medium text-gray-800" x-text="result.display_name"></span>
+                                    class="w-full text-left px-4 py-2.5 text-sm hover:bg-hoop-50 dark:hover:bg-hoop-900/30 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors">
+                                    <span class="font-medium text-gray-800 dark:text-gray-200" x-text="result.display_name"></span>
                                 </button>
                             </template>
                         </div>
 
                         <div class="mt-3">
-                            <div id="map-picker" class="w-full h-72 rounded-xl border border-gray-200"></div>
-                            <p class="mt-1.5 text-xs text-gray-400">Drag the pin to set the location, or search above.</p>
+                            <div id="map-picker" class="w-full h-72 rounded-xl border border-gray-200 dark:border-gray-600"></div>
+                            <p class="mt-1.5 text-xs text-gray-400 dark:text-gray-500">Drag the pin to set the location, or search above.</p>
                         </div>
 
-                        <div x-show="selectedAddress" x-cloak class="mt-2 flex items-center gap-2 text-sm text-gray-600 bg-hoop-50 rounded-xl px-4 py-3">
+                        <div x-show="selectedAddress" x-cloak class="mt-2 flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300 bg-hoop-50 dark:bg-hoop-900/30 rounded-xl px-4 py-3">
                             <svg class="w-4 h-4 text-green-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
                             <span x-text="selectedAddress" class="flex-1"></span>
                             <button type="button" x-on:click="clearLocation()" class="text-red-500 hover:text-red-700 font-medium text-xs">Remove</button>
@@ -85,7 +85,7 @@
                     </div>
 
                     <div class="flex items-center justify-between pt-2">
-                        <a href="{{ route('events.show', $event) }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">Cancel</a>
+                        <a href="{{ route('events.show', $event) }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium transition-colors">Cancel</a>
                         <button type="submit" class="btn-primary">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                             Save Changes

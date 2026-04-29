@@ -5,15 +5,15 @@
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </a>
             <div>
-                <h2 class="font-semibold text-xl text-gray-800 leading-tight">Add Player</h2>
-                <p class="text-sm text-gray-500">Register a new player</p>
+                <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-100 leading-tight">Add Player</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Register a new player</p>
             </div>
         </div>
     </x-slot>
 
     <div class="py-10">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-soft p-8">
+            <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-soft p-8">
                 <form method="POST" action="{{ route('players.store') }}" enctype="multipart/form-data" class="space-y-8">
                     @csrf
 
@@ -23,7 +23,7 @@
                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center">
                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
                             </div>
-                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Account Information</h3>
+                            <h3 class="text-sm font-bold text-gray-800 dark:text-gray-200 uppercase tracking-wider">Account Information</h3>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="col-span-2">
@@ -62,8 +62,8 @@
 
                             <div>
                                 <label class="flex items-center gap-3 mt-6 cursor-pointer select-none">
-                                    <input type="checkbox" name="status" value="1" checked class="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
-                                    <span class="text-sm font-semibold text-gray-700">Active account</span>
+                                    <input type="checkbox" name="status" value="1" checked class="w-4 h-4 rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500">
+                                    <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Active account</span>
                                 </label>
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                             <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-indigo-600 flex items-center justify-center">
                                 <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
                             </div>
-                            <h3 class="text-sm font-bold text-gray-800 uppercase tracking-wider">Player Profile</h3>
+                            <h3 class="text-sm font-bold text-gray-800 dark:text-gray-200 uppercase tracking-wider">Player Profile</h3>
                         </div>
                         <div class="grid grid-cols-2 gap-4">
                             <div>
@@ -151,7 +151,7 @@
                             <div>
                                 <label for="image" class="form-label">Photo</label>
                                 <input type="file" name="image" id="image" accept="image/*"
-                                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                    class="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 dark:file:bg-indigo-900/50 file:text-indigo-700 dark:file:text-indigo-300 hover:file:bg-indigo-100 dark:hover:file:bg-indigo-800/50">
                                 @error('image') <p class="form-error">{{ $message }}</p> @enderror
                             </div>
 
@@ -163,8 +163,8 @@
                         </div>
                     </div>
 
-                    <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-                        <a href="{{ route('players.index') }}" class="text-sm text-gray-500 hover:text-gray-700 font-medium transition-colors">Cancel</a>
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <a href="{{ route('players.index') }}" class="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 font-medium transition-colors">Cancel</a>
                         <button type="submit" class="btn-primary">
                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                             Create Player
